@@ -36,6 +36,7 @@ class Controller:
             self.update()
 
         self.show_winner()
+        # checking the user wants rematch
         if self.rematch:
             self.reset()
             self.main()

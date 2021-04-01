@@ -1,6 +1,6 @@
 from constants import *
 from piece import Piece
-
+# TODO change the method names
 
 class Model:
     def __init__(self):
