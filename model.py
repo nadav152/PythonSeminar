@@ -1,7 +1,5 @@
 from constants import *
-import pygame
 from piece import Piece
-from view import View
 
 
 class Model:
@@ -13,6 +11,7 @@ class Model:
         self.valid_moves = {}
         self.turn = WHITE
         self.selected = None
+        self.winner = None
 
     def create_board_array(self):
         for row in range(ROWS):
@@ -63,12 +62,21 @@ class Model:
             self.move(self.selected, row, col)
             skipped = self.valid_moves[(row, col)]
             if skipped:
-                self.board.remove(skipped)
+                self.remove(skipped)
             self.change_turn()
         else:
             return False
 
         return True
+
+    def remove(self, pieces):
+        for piece in pieces:
+            self.board[piece.row][piece.col] = 0
+            if piece != 0:
+                if piece.color == WHITE:
+                    self.white_left -= 1
+                else:
+                    self.black_left -= 1
 
     def get_valid_moves(self, piece):
         moves = {}
@@ -86,7 +94,9 @@ class Model:
 
         return moves
 
-    def travese_left(self, start, stop, step, color, left, skipped=[]):
+    def travese_left(self, start, stop, step, color, left, skipped=None):
+        if skipped is None:
+            skipped = []
         moves = {}
         last = []
         for r in range(start, stop, step):
@@ -119,7 +129,9 @@ class Model:
             left -= 1
         return moves
 
-    def travese_right(self, start, stop, step, color, right, skipped=[]):
+    def travese_right(self, start, stop, step, color, right, skipped=None):
+        if skipped is None:
+            skipped = []
         moves = {}
         last = []
         for r in range(start, stop, step):
@@ -159,10 +171,12 @@ class Model:
         else:
             self.turn = BLACK
 
-    def winner(self):
+    def check_winner(self):
         if self.white_left == 0:
+            self.winner = 'BLACK'
             return BLACK
         elif self.black_left == 0:
+            self.winner = 'WHITE'
             return WHITE
 
         return None

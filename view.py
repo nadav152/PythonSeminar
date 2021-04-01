@@ -42,3 +42,6 @@ class View:
                                ((col * SQUARE_SIZE + SQUARE_SIZE // 2), (row * SQUARE_SIZE + SQUARE_SIZE // 2)), 25,
                                width=4)
             # pygame.draw.rect(self.win, RED, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
+
+    def reset_screen(self, win):
+        self.draw_squares(win)
