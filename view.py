@@ -50,5 +50,8 @@ class View:
         win.blit(winner, (650 / 2 - winner.get_width() / 2, 200))
 
     def draw_rematch(self, win):
+        font = pygame.font.SysFont('comicsans', 40)
+        rematch = font.render('Would You Like A Rematch ?', True, (255, 255, 255))
+        win.blit(rematch, (650 / 2 - rematch.get_width() / 2, 250))
         pygame.draw.rect(win, GREEN, (150, 450, 100, 50))
         pygame.draw.rect(win, RED, (450, 450, 100, 50))

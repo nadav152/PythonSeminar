@@ -1,5 +1,7 @@
 from constants import *
 from piece import Piece
+
+
 # TODO change the method names
 
 class Model:
@@ -45,7 +47,7 @@ class Model:
 
     def move(self, piece, row, col):
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], \
-                                                                             self.board[piece.row][piece.col]
+                                                                 self.board[piece.row][piece.col]
         piece.move(row, col)
 
         if row == (ROWS - 1) or row == 0:
