@@ -43,5 +43,12 @@ class View:
                                width=4)
             # pygame.draw.rect(self.win, RED, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
-    def reset_screen(self, win):
+    def draw_winner(self, win, winner):
         self.draw_squares(win)
+        large_font = pygame.font.SysFont('comicsans', 40)
+        winner = large_font.render('The winner is : ' + str(winner), True, (255, 255, 255))
+        win.blit(winner, (650 / 2 - winner.get_width() / 2, 200))
+
+    def draw_rematch(self, win):
+        pygame.draw.rect(win, GREEN, (150, 450, 100, 50))
+        pygame.draw.rect(win, RED, (450, 450, 100, 50))

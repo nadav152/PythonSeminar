@@ -7,8 +7,12 @@ from constants import *
 class Controller:
 
     def __init__(self):
+        self.reset()
+
+    def reset(self):
         self.model = Model()
         self.view = View(self)
+        self.rematch = False
 
     def main(self):
         run = True
@@ -32,20 +36,30 @@ class Controller:
             self.update()
 
         self.show_winner()
+        if self.rematch:
+            self.reset()
+            self.main()
+        else:
+            pygame.quit()
 
     def show_winner(self):
         run = True
         while run:
             pygame.time.delay(100)
+            mouse = pygame.mouse.get_pos()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-            self.view.reset_screen(WIN)
-            large_font = pygame.font.SysFont('comicsans', 40)
-            winner = large_font.render('The winner is : ' + str(self.model.winner), True, (255, 255, 255))
-            WIN.blit(winner, (650 / 2 - winner.get_width() / 2, 200))
+                elif event.type == pygame.MOUSEBUTTONDOWN and (
+                        150 + 100 > mouse[0] > 150 and 450 + 50 > mouse[1] > 450):
+                    self.rematch = True
+                    run = False
+                elif event.type == pygame.MOUSEBUTTONDOWN and (
+                        450 + 100 > mouse[0] > 150 and 450 + 50 > mouse[1] > 450):
+                    run = False
+            self.view.draw_winner(WIN, self.model.winner)
+            self.view.draw_rematch(WIN)
             pygame.display.update()
-        pygame.quit()
 
     def update(self):
         self.view.draw_board(WIN, self.model.board)
