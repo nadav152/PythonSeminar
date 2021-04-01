@@ -50,10 +50,12 @@ class Controller:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+                # mouse pressed on rematch
                 elif event.type == pygame.MOUSEBUTTONDOWN and (
                         150 + 100 > mouse[0] > 150 and 450 + 50 > mouse[1] > 450):
                     self.rematch = True
                     run = False
+                # mouse pressed on end game
                 elif event.type == pygame.MOUSEBUTTONDOWN and (
                         450 + 100 > mouse[0] > 150 and 450 + 50 > mouse[1] > 450):
                     run = False
