@@ -33,7 +33,7 @@ class Piece:
         if self.king:
             win.blit(CROWN, (self.x - CROWN.get_width() // 2, (self.y - 1) - CROWN.get_height() // 2))
 
-    def move(self, row, col):
+    def move_piece(self, row, col):
         self.row = row
         self.col = col
         self.calc_pos()

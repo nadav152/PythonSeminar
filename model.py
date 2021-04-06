@@ -12,7 +12,7 @@ class Model:
         self.create_board_array()
         self.valid_moves = {}
         self.turn = WHITE
-        self.selected = None
+        self.selected_piece = None
         self.winner = None
 
     def create_board_array(self):
@@ -29,39 +29,26 @@ class Model:
                 else:
                     self.board[row].append(0)
 
-    def select(self, row, col):
-        if self.selected and (row, col) in self.valid_moves:
-            result = self._move(row, col)
+    def select_area(self, row, col):
+        if self.selected_piece and (row, col) in self.valid_moves:
+            result = self.check_possible_movement(row, col)
 
             if not result:
-                self.selected = None
-                self.select(row, col)
+                self.selected_piece = None
+                self.select_area(row, col)
 
         piece = self.get_piece(row, col)
         if piece != 0 and piece.color == self.turn:
-            self.selected = piece
+            self.selected_piece = piece
             self.valid_moves = self.get_valid_moves(piece)
             return True
 
         return False
 
-    def move(self, piece, row, col):
-        self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], \
-                                                                 self.board[piece.row][piece.col]
-        piece.move(row, col)
-
-        if row == (ROWS - 1) or row == 0:
-            if piece.king is False:
-                piece.make_king()
-                if piece.color == WHITE:
-                    self.white_kings += 1
-                else:
-                    self.black_kings += 1
-
-    def _move(self, row, col):
+    def check_possible_movement(self, row, col):
         piece = self.get_piece(row, col)  # check if square is empty
-        if self.selected and piece == 0 and (row, col) in self.valid_moves:
-            self.move(self.selected, row, col)
+        if self.selected_piece and piece == 0 and (row, col) in self.valid_moves:
+            self.update_model_location(self.selected_piece, row, col)
             skipped = self.valid_moves[(row, col)]
             if skipped:
                 self.remove(skipped)
@@ -70,6 +57,21 @@ class Model:
             return False
 
         return True
+
+    def update_model_location(self, piece, row, col):
+        # update board array
+        self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], \
+                                                                 self.board[piece.row][piece.col]
+        # update the current piece values
+        piece.move_piece(row, col)
+
+        if row == (ROWS - 1) or row == 0:
+            if piece.king is False:
+                piece.make_king()
+                if piece.color == WHITE:
+                    self.white_kings += 1
+                else:
+                    self.black_kings += 1
 
     def remove(self, pieces):
         for piece in pieces:

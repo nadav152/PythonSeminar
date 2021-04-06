@@ -1,15 +1,14 @@
 from model import Model
 from view import View
-import pygame
 from constants import *
 
 
 class Controller:
 
     def __init__(self):
-        self.reset()
+        self.reset_self_values()
 
-    def reset(self):
+    def reset_self_values(self):
         self.model = Model()
         self.view = View(self)
         self.rematch = False
@@ -31,14 +30,16 @@ class Controller:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     row, col = self.get_row_col_from_mouse(pos)
-                    self.model.select(row, col)
+                    self.model.select_area(row, col)
 
-            self.update()
+            self.update_game()
 
         self.show_winner()
-        # checking the user wants rematch
+        self.check_for_rematch()
+
+    def check_for_rematch(self):
         if self.rematch:
-            self.reset()
+            self.reset_self_values()
             self.main()
         else:
             pygame.quit()
@@ -64,8 +65,8 @@ class Controller:
             self.view.draw_rematch(WIN)
             pygame.display.update()
 
-    def update(self):
-        self.view.draw_board(WIN, self.model.board)
+    def update_game(self):
+        self.view.draw_game(WIN, self.model.board)
         self.view.draw_valid_moves(WIN, self.model.valid_moves)
         pygame.display.update()
 

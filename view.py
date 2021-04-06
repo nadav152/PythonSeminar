@@ -1,13 +1,18 @@
-import pygame
-
 from constants import *
-from piece import Piece
 
 
 class View:
 
     def __init__(self, controller):
         self.controller = controller
+
+    def draw_game(self, win, board):
+        self.draw_squares(win)
+        for row in range(ROWS):
+            for col in range(COLS):
+                piece = board[row][col]
+                if piece != 0:
+                    piece.draw_piece(win)
 
     def draw_squares(self, win):
         win.fill(WHITE)
@@ -27,30 +32,21 @@ class View:
         pygame.draw.line(win, BLACK, [HEIGHT, WIDTH], [0, WIDTH], 8)
         pygame.draw.line(win, BLACK, [HEIGHT, WIDTH], [HEIGHT, 0], 12)
 
-    def draw_board(self, win, board):
-        self.draw_squares(win)
-        for row in range(ROWS):
-            for col in range(COLS):
-                piece = board[row][col]
-                if piece != 0:
-                    piece.draw_piece(win)
-
     def draw_valid_moves(self, win, moves):
         for move in moves:
             row, col = move
             pygame.draw.circle(win, RED,
                                ((col * SQUARE_SIZE + SQUARE_SIZE // 2), (row * SQUARE_SIZE + SQUARE_SIZE // 2)), 25,
                                width=4)
-            # pygame.draw.rect(self.win, RED, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
     def draw_winner(self, win, winner):
         self.draw_squares(win)
-        large_font = pygame.font.SysFont('comicsans', 40)
+        large_font = pygame.font.SysFont('comics', 40)
         winner = large_font.render('The winner is : ' + str(winner), True, (255, 255, 255))
         win.blit(winner, (650 / 2 - winner.get_width() / 2, 200))
 
     def draw_rematch(self, win):
-        font = pygame.font.SysFont('comicsans', 40)
+        font = pygame.font.SysFont('comics', 40)
         rematch = font.render('Would You Like A Rematch ?', True, (255, 255, 255))
         win.blit(rematch, (650 / 2 - rematch.get_width() / 2, 250))
         pygame.draw.rect(win, GREEN, (150, 450, 100, 50))
