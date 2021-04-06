@@ -19,7 +19,7 @@ class Controller:
 
         while run:
             clock.tick(FPS)
-
+            pos = pygame.mouse.get_pos()
             if self.model.check_winner() is not None:
                 run = False
 
@@ -27,8 +27,11 @@ class Controller:
                 if event.type == pygame.QUIT:
                     return
 
+                if event.type == pygame.MOUSEBUTTONDOWN and (
+                        700 + 100 > pos[0] > 700 and 100 + 50 > pos[1] > 100):
+                    self.model.re_do()
+
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos()
                     row, col = self.get_row_col_from_mouse(pos)
                     self.model.select_area(row, col)
 
@@ -53,14 +56,16 @@ class Controller:
                 if event.type == pygame.QUIT:
                     run = False
                 # mouse pressed on rematch
-                elif event.type == pygame.MOUSEBUTTONDOWN and (
+                if event.type == pygame.MOUSEBUTTONDOWN and (
                         150 + 100 > mouse[0] > 150 and 450 + 50 > mouse[1] > 450):
                     self.rematch = True
                     run = False
+
                 # mouse pressed on end game
-                elif event.type == pygame.MOUSEBUTTONDOWN and (
-                        450 + 100 > mouse[0] > 150 and 450 + 50 > mouse[1] > 450):
+                if event.type == pygame.MOUSEBUTTONDOWN and (
+                        450 + 100 > mouse[0] > 450 and 450 + 50 > mouse[1] > 450):
                     run = False
+
             self.view.draw_winner(WIN, self.model.winner)
             self.view.draw_rematch(WIN)
             pygame.display.update()
@@ -68,6 +73,7 @@ class Controller:
     def update_game(self):
         self.view.draw_game(WIN, self.model.board)
         self.view.draw_valid_moves(WIN, self.model.valid_moves)
+        self.view.set_button(WIN)
         pygame.display.update()
 
     def get_row_col_from_mouse(self, pos):
@@ -83,7 +89,7 @@ class Controller:
 if __name__ == '__main__':
     FPS = 60
     pygame.init()
-    WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+    WIN = pygame.display.set_mode((WIDTH + 200, HEIGHT))
     pygame.display.set_caption('Checkers')
 
     checkers = Controller()

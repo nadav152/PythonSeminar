@@ -51,3 +51,9 @@ class View:
         win.blit(rematch, (650 / 2 - rematch.get_width() / 2, 250))
         pygame.draw.rect(win, GREEN, (150, 450, 100, 50))
         pygame.draw.rect(win, RED, (450, 450, 100, 50))
+
+    def set_button(self, win):
+        font = pygame.font.SysFont('comics', 25)
+        rematch = font.render('ReDo', True, (36, 34, 34))
+        pygame.draw.rect(win, GREY, (700, 100, 100, 50))
+        win.blit(rematch, (725, 120))

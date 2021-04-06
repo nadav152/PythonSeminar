@@ -2,7 +2,7 @@ from constants import *
 from piece import Piece
 
 
-# TODO change the method names
+# TODO implement redo method
 
 class Model:
     def __init__(self):
@@ -14,6 +14,17 @@ class Model:
         self.turn = WHITE
         self.selected_piece = None
         self.winner = None
+        self.board_stack = []
+
+    def re_do(self):
+        print("implement this method")
+        ''' 
+       1 -  self.board = self.board_stack.pop
+       2 -  change turn color
+       3 -  change valid moves 
+       4 -  change how many black/white left
+       5 -  ....
+        '''
 
     def create_board_array(self):
         for row in range(ROWS):
@@ -32,6 +43,9 @@ class Model:
     def select_area(self, row, col):
         if self.selected_piece and (row, col) in self.valid_moves:
             result = self.check_possible_movement(row, col)
+
+            if result:
+                self.board_stack.append(self.board)
 
             if not result:
                 self.selected_piece = None
