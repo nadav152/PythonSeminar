@@ -3,8 +3,9 @@ from piece import Piece
 from memento import Memento
 from pygame import mixer
 
+
 class Model:
-    def __init__(self, controller):
+    def __init__(self):
         self.board = []
         self.black_left = self.white_left = 12
         self.black_kings = self.white_kings = 0
@@ -15,7 +16,6 @@ class Model:
         self.winner = None
         self.board_stack = []
         self.memento = Memento()
-        self.controller = controller
 
     def re_do(self):
         state = self.memento.redo()

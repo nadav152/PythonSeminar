@@ -3,8 +3,10 @@ from constants import *
 
 class View:
 
-    def __init__(self, controller):
-        self.controller = controller
+    def __init__(self):
+        pass
+
+    #     TODO does the view needs to know the controller ?
 
     def draw_game(self, win, board):
         self.draw_squares(win)

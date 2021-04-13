@@ -9,8 +9,8 @@ class Controller:
         self.reset_self_values()
 
     def reset_self_values(self):
-        self.model = Model(self)
-        self.view = View(self)
+        self.model = Model()
+        self.view = View()
         self.rematch = False
 
     def main(self):
