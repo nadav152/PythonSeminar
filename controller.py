@@ -9,7 +9,7 @@ class Controller:
         self.reset_self_values()
 
     def reset_self_values(self):
-        self.model = Model()
+        self.model = Model(self)
         self.view = View(self)
         self.rematch = False
 
@@ -33,8 +33,6 @@ class Controller:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     row, col = self.get_row_col_from_mouse(pos)
                     self.model.select_area(row, col)
-
-
 
             self.update_game()
 

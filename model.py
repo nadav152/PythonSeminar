@@ -1,11 +1,11 @@
 from constants import *
 from piece import Piece
-
+from memento import Memento
 
 # TODO implement redo method
 
 class Model:
-    def __init__(self):
+    def __init__(self, controller):
         self.board = []
         self.black_left = self.white_left = 12
         self.black_kings = self.white_kings = 0
@@ -15,42 +15,37 @@ class Model:
         self.selected_piece = None
         self.winner = None
         self.board_stack = []
+        self.memento = Memento()
+        self.controller = controller
 
     def re_do(self):
         # print("implement this method")
-        # perv = []
-        # for row in range(ROWS):
-        #     perv.append([])
-        #     for col in range(COLS):
-        #         if col % 2 == ((row + 1) % 2):
-        #             if row < 3:
-        #                 perv[row].append(Piece(row, col, BLACK))
-        #             elif row > 4:
-        #                 perv[row].append(0)
-        #             else:
-        #                 perv[row].append(0)
-        #         else:
-        #             perv[row].append(0)
-        #
-        # self.board_stack.append(perv)
-        #
-        # perv = []
-        # for row in range(ROWS):
-        #     perv.append([])
-        #     for col in range(COLS):
-        #         if col % 2 == ((row + 1) % 2):
-        #             if row < 3:
-        #                 perv[row].append(Piece(row, col, WHITE))
-        #             elif row > 4:
-        #                 perv[row].append(0)
-        #             else:
-        #                 perv[row].append(0)
-        #         else:
-        #             perv[row].append(0)
+        state = self.memento.redo()
+        temp = []
+        for row in range(ROWS):
+            temp.append([])
+            for col in range(COLS):
+                if col % 2 == ((row + 1) % 2):
+                    if row < 3:
+                        temp[row].append(Piece(row, col, BLACK))
+                    elif row > 4:
+                        temp[row].append(Piece(row, col, WHITE))
+                    else:
+                        temp[row].append(0)
+                else:
+                    temp[row].append(0)
+        if state:
+            self.board = state.board
+            self.black_left = state.black_left
+            self.white_left = state.white_left
+            self.black_kings = state.black_kings
+            self.white_kings = state.white_kings
+            self.turn = state.turn
+            self.controller.update_game()
+            self.printConsole(state.board)
 
-        self.board = self.board_stack.pop()
-
-
+        else:
+            print("Empty")
 
 
         ''' 
@@ -78,8 +73,8 @@ class Model:
 
     def select_area(self, row, col):
         if self.selected_piece and (row, col) in self.valid_moves:
-
-            #self.board_stack.append(self.board)
+            # self.memento.push(self.board, self.black_left, self.white_left, self.black_kings, self.white_kings,
+            #                   self.turn)
             result = self.check_possible_movement(row, col)
 
             if result:
@@ -99,6 +94,8 @@ class Model:
     def check_possible_movement(self, row, col):
         piece = self.get_piece(row, col)  # check if square is empty
         if self.selected_piece and piece == 0 and (row, col) in self.valid_moves:
+            self.memento.push(self.board, self.black_left, self.white_left, self.black_kings, self.white_kings,
+                              self.turn)
             self.update_model_location(self.selected_piece, row, col)
             skipped = self.valid_moves[(row, col)]
             if skipped:
@@ -106,7 +103,6 @@ class Model:
             self.change_turn()
         else:
             return False
-
 
         return True
 
@@ -239,3 +235,12 @@ class Model:
 
     def get_piece(self, row, col):
         return self.board[row][col]
+
+    def printConsole(self, board):
+        for row in range(ROWS):
+            print("\n")
+            for col in range(COLS):
+                if board[row][col] == 0:
+                    print("_",end=" ")
+                else:
+                    print("#",end=" ")

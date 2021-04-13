@@ -37,3 +37,5 @@ class Piece:
         self.row = row
         self.col = col
         self.calc_pos()
+
+
