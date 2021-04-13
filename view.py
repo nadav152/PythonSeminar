@@ -46,14 +46,24 @@ class View:
         win.blit(winner, (650 / 2 - winner.get_width() / 2, 200))
 
     def draw_rematch(self, win):
+        win.fill(WHITE)
         font = pygame.font.SysFont('comics', 40)
-        rematch = font.render('Would You Like A Rematch ?', True, (255, 255, 255))
-        win.blit(rematch, (650 / 2 - rematch.get_width() / 2, 250))
+        rematch = font.render('Would You Like A Rematch ?', True, BLACK)
+        win.blit(rematch, (700 / 2 - rematch.get_width() / 2, 250))
+        yes = font.render('Yes', True, WHITE)
+        no = font.render('No', True, WHITE)
         pygame.draw.rect(win, GREEN, (150, 450, 100, 50))
         pygame.draw.rect(win, RED, (450, 450, 100, 50))
+        win.blit(yes, (175, 460))
+        win.blit(no, (482, 461))
+
 
     def set_button(self, win):
         font = pygame.font.SysFont('comics', 25)
         rematch = font.render('ReDo', True, (36, 34, 34))
         pygame.draw.rect(win, GREY, (700, 100, 100, 50))
         win.blit(rematch, (725, 120))
+        pygame.draw.line(win, BLACK, (700, 100), (800, 100), 2)
+        pygame.draw.line(win, BLACK, (700, 100), (700, 150), 2)
+        pygame.draw.line(win, BLACK, (700, 150), (800, 150), 2)
+        pygame.draw.line(win, BLACK, (800, 100), (800, 150), 2)

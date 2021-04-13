@@ -17,8 +17,44 @@ class Model:
         self.board_stack = []
 
     def re_do(self):
-        print("implement this method")
+        # print("implement this method")
+        # perv = []
+        # for row in range(ROWS):
+        #     perv.append([])
+        #     for col in range(COLS):
+        #         if col % 2 == ((row + 1) % 2):
+        #             if row < 3:
+        #                 perv[row].append(Piece(row, col, BLACK))
+        #             elif row > 4:
+        #                 perv[row].append(0)
+        #             else:
+        #                 perv[row].append(0)
+        #         else:
+        #             perv[row].append(0)
+        #
+        # self.board_stack.append(perv)
+        #
+        # perv = []
+        # for row in range(ROWS):
+        #     perv.append([])
+        #     for col in range(COLS):
+        #         if col % 2 == ((row + 1) % 2):
+        #             if row < 3:
+        #                 perv[row].append(Piece(row, col, WHITE))
+        #             elif row > 4:
+        #                 perv[row].append(0)
+        #             else:
+        #                 perv[row].append(0)
+        #         else:
+        #             perv[row].append(0)
+
+        self.board = self.board_stack.pop()
+
+
+
+
         ''' 
+        
        1 -  self.board = self.board_stack.pop
        2 -  change turn color
        3 -  change valid moves 
@@ -42,11 +78,12 @@ class Model:
 
     def select_area(self, row, col):
         if self.selected_piece and (row, col) in self.valid_moves:
+
+            #self.board_stack.append(self.board)
             result = self.check_possible_movement(row, col)
 
             if result:
-                self.board_stack.append(self.board)
-
+                pass
             if not result:
                 self.selected_piece = None
                 self.select_area(row, col)
@@ -69,6 +106,7 @@ class Model:
             self.change_turn()
         else:
             return False
+
 
         return True
 

@@ -16,7 +16,6 @@ class Controller:
     def main(self):
         run = True
         clock = pygame.time.Clock()
-
         while run:
             clock.tick(FPS)
             pos = pygame.mouse.get_pos()
@@ -31,9 +30,11 @@ class Controller:
                         700 + 100 > pos[0] > 700 and 100 + 50 > pos[1] > 100):
                     self.model.re_do()
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                elif event.type == pygame.MOUSEBUTTONDOWN:
                     row, col = self.get_row_col_from_mouse(pos)
                     self.model.select_area(row, col)
+
+
 
             self.update_game()
 
