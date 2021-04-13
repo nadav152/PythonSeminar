@@ -2,7 +2,6 @@ from constants import *
 from piece import Piece
 from memento import Memento
 
-# TODO implement redo method
 
 class Model:
     def __init__(self, controller):
@@ -19,21 +18,8 @@ class Model:
         self.controller = controller
 
     def re_do(self):
-        # print("implement this method")
         state = self.memento.redo()
-        temp = []
-        for row in range(ROWS):
-            temp.append([])
-            for col in range(COLS):
-                if col % 2 == ((row + 1) % 2):
-                    if row < 3:
-                        temp[row].append(Piece(row, col, BLACK))
-                    elif row > 4:
-                        temp[row].append(Piece(row, col, WHITE))
-                    else:
-                        temp[row].append(0)
-                else:
-                    temp[row].append(0)
+
         if state:
             self.board = state.board
             self.black_left = state.black_left
@@ -41,21 +27,6 @@ class Model:
             self.black_kings = state.black_kings
             self.white_kings = state.white_kings
             self.turn = state.turn
-            self.controller.update_game()
-            self.printConsole(state.board)
-
-        else:
-            print("Empty")
-
-
-        ''' 
-        
-       1 -  self.board = self.board_stack.pop
-       2 -  change turn color
-       3 -  change valid moves 
-       4 -  change how many black/white left
-       5 -  ....
-        '''
 
     def create_board_array(self):
         for row in range(ROWS):
@@ -73,8 +44,8 @@ class Model:
 
     def select_area(self, row, col):
         if self.selected_piece and (row, col) in self.valid_moves:
-            # self.memento.push(self.board, self.black_left, self.white_left, self.black_kings, self.white_kings,
-            #                   self.turn)
+            self.memento.push(self.board, self.black_left, self.white_left, self.black_kings, self.white_kings,
+                              self.turn)
             result = self.check_possible_movement(row, col)
 
             if result:
@@ -94,8 +65,6 @@ class Model:
     def check_possible_movement(self, row, col):
         piece = self.get_piece(row, col)  # check if square is empty
         if self.selected_piece and piece == 0 and (row, col) in self.valid_moves:
-            self.memento.push(self.board, self.black_left, self.white_left, self.black_kings, self.white_kings,
-                              self.turn)
             self.update_model_location(self.selected_piece, row, col)
             skipped = self.valid_moves[(row, col)]
             if skipped:
@@ -235,12 +204,3 @@ class Model:
 
     def get_piece(self, row, col):
         return self.board[row][col]
-
-    def printConsole(self, board):
-        for row in range(ROWS):
-            print("\n")
-            for col in range(COLS):
-                if board[row][col] == 0:
-                    print("_",end=" ")
-                else:
-                    print("#",end=" ")

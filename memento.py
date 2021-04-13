@@ -1,7 +1,10 @@
+from copy import deepcopy
+
+
 class State:
 
     def __init__(self, board, black_left, white_left, black_kings, white_kings, turn):
-        self.board = board
+        self.board = deepcopy(board)
         self.black_left = black_left
         self.white_left = white_left
         self.black_kings = black_kings
