@@ -72,7 +72,7 @@ class Controller:
     def update_game(self):
         self.view.draw_game(WIN, self.model.board)
         self.view.draw_valid_moves(WIN, self.model.valid_moves)
-        self.view.set_button(WIN)
+        self.view.draw_redo(WIN)
         pygame.display.update()
 
     def get_row_col_from_mouse(self, pos):

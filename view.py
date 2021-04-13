@@ -57,8 +57,7 @@ class View:
         win.blit(yes, (175, 460))
         win.blit(no, (482, 461))
 
-
-    def set_button(self, win):
+    def draw_redo(self, win):
         font = pygame.font.SysFont('comics', 25)
         rematch = font.render('ReDo', True, (36, 34, 34))
         pygame.draw.rect(win, GREY, (700, 100, 100, 50))
