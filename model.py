@@ -27,6 +27,7 @@ class Model:
             self.black_kings = state.black_kings
             self.white_kings = state.white_kings
             self.turn = state.turn
+            self.valid_moves = {}
 
     def create_board_array(self):
         for row in range(ROWS):
