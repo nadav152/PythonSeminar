@@ -1,7 +1,7 @@
 from constants import *
 from piece import Piece
 from memento import Memento
-
+from pygame import mixer
 
 class Model:
     def __init__(self, controller):
@@ -70,6 +70,8 @@ class Model:
             skipped = self.valid_moves[(row, col)]
             if skipped:
                 self.remove(skipped)
+                mixer.music.load('Assets/KillSound.mp3')
+                mixer.music.play(1)
             self.change_turn()
         else:
             return False
