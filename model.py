@@ -8,6 +8,7 @@ class Model:
     def __init__(self):
         self.board = []
         self.black_left = self.white_left = 12
+        self.black_undo_left = self.white_undo_left = 3
         self.black_kings = self.white_kings = 0
         self.create_board_array()
         self.valid_moves = {}
@@ -18,16 +19,18 @@ class Model:
         self.memento = Memento()
 
     def re_do(self):
-        state = self.memento.redo()
+        state = self.memento.undo()
 
         if state:
-            self.board = state.board
-            self.black_left = state.black_left
-            self.white_left = state.white_left
-            self.black_kings = state.black_kings
-            self.white_kings = state.white_kings
-            self.turn = state.turn
-            self.valid_moves = {}
+
+            if self.player_has_turn(self.turn):
+                self.board = state.board
+                self.black_left = state.black_left
+                self.white_left = state.white_left
+                self.black_kings = state.black_kings
+                self.white_kings = state.white_kings
+                self.turn = state.turn
+                self.valid_moves = {}
 
     def create_board_array(self):
         for row in range(ROWS):
@@ -207,3 +210,14 @@ class Model:
 
     def get_piece(self, row, col):
         return self.board[row][col]
+
+    def player_has_turn(self, turn):
+        if turn == BLACK and self.white_undo_left > 0:
+            self.white_undo_left -= 1
+            return True
+
+        elif turn == WHITE and self.black_undo_left > 0:
+            self.black_undo_left -= 1
+            return True
+        else:
+            return False

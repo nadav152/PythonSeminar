@@ -59,12 +59,29 @@ class View:
         win.blit(yes, (175, 460))
         win.blit(no, (482, 461))
 
-    def draw_redo(self, win):
-        font = pygame.font.SysFont('comics', 25)
-        rematch = font.render('ReDo', True, (36, 34, 34))
+    def draw_undo(self, win, player_turn):
+        font = pygame.font.SysFont('comics', 23)
+        turn = self.conver_turn_to_str(player_turn)
+        player_undo = turn + ' Undo'
+        rematch = font.render(player_undo, True, (36, 34, 34))
         pygame.draw.rect(win, GREY, (700, 100, 100, 50))
-        win.blit(rematch, (725, 120))
+        win.blit(rematch, (710, 120))
         pygame.draw.line(win, BLACK, (700, 100), (800, 100), 2)
         pygame.draw.line(win, BLACK, (700, 100), (700, 150), 2)
         pygame.draw.line(win, BLACK, (700, 150), (800, 150), 2)
         pygame.draw.line(win, BLACK, (800, 100), (800, 150), 2)
+
+    def draw_remain_undoes(self, win, white_player_undo, black_play_undo):
+        font = pygame.font.SysFont('comics', 23)
+        white_undoes = 'White Undo left : ' + str(white_player_undo)
+        black_undoes = 'Black Undo left : ' + str(black_play_undo)
+        white_render = font.render(white_undoes, True, (36, 34, 34))
+        black_render = font.render(black_undoes, True, (36, 34, 34))
+        win.blit(white_render, (680, 180))
+        win.blit(black_render, (680, 210))
+
+    def conver_turn_to_str(self, player_turn):
+        if player_turn == WHITE:
+            return 'Black'
+        else:
+            return 'White'
