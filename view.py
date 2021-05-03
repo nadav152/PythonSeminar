@@ -80,17 +80,17 @@ class View:
         win.blit(white_render, (680, 180))
         win.blit(black_render, (680, 210))
 
-    def draw_timer(self, win, minutes, seconds):
+    def draw_timer(self, win, minutes_white, seconds_white, minutes_black, seconds_black):
         font = pygame.font.SysFont('David', 23)
-        min_str = str(int(minutes))
-        if minutes < 10:
-            min_str = "0" + str(int(minutes))
-        sec_str = str(int(seconds))
-        if seconds < 10:
-            sec_str = "0" + str(int(seconds))
-        time_str = min_str + ":" + sec_str
-        time_render = font.render(time_str,True, (36, 34, 34))
-        win.blit(time_render, (680, 400))
+
+        time_str_white = '{:02d}:{:02d}'.format(int(minutes_white), int(seconds_white))
+        time_str_black = '{:02d}:{:02d}'.format(int(minutes_black), int(seconds_black))
+
+        time_render_white = font.render(time_str_white, True, (36, 34, 34))
+        time_render_black = font.render(time_str_black, True, (36, 34, 34))
+        win.blit(time_render_white, (680, 400))
+        win.blit(time_render_black, (680, 50))
+
 
 
     def conver_turn_to_str(self, player_turn):

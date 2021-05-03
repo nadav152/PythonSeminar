@@ -7,6 +7,10 @@ class Controller:
 
     def __init__(self):
         self.reset_self_values()
+        self.seconds_black = 0
+        self.minutes_black = 20
+        self.seconds_white = 0
+        self.minutes_white = 0
 
     def reset_self_values(self):
         self.model = Model()
@@ -21,8 +25,13 @@ class Controller:
             clock.tick(FPS)
             curr_time = time.time()
             exact_time = curr_time - start_time
-            self.seconds = 60 - exact_time % 60
-            self.minutes = MINUTES_PER_PLAYER - exact_time / 60
+            if self.model.turn == WHITE:
+                self.seconds_white = 60 - exact_time % 60
+                self.minutes_white = MINUTES_PER_PLAYER - exact_time / 60
+
+            else:
+                self.seconds_black = 60 - exact_time % 60
+                self.minutes_black = MINUTES_PER_PLAYER - exact_time / 60
 
             pos = pygame.mouse.get_pos()
             if self.model.check_winner() is not None:
@@ -80,7 +89,7 @@ class Controller:
         self.view.draw_valid_moves(WIN, self.model.valid_moves)
         self.view.draw_undo(WIN, self.model.turn)
         self.view.draw_remain_undoes(WIN, self.model.white_undo_left, self.model.black_undo_left)
-        self.view.draw_timer(WIN, self.minutes, self.seconds)
+        self.view.draw_timer(WIN, self.minutes_white, self.seconds_white, self.minutes_black, self.seconds_black)
         pygame.display.update()
 
     def get_row_col_from_mouse(self, pos):
