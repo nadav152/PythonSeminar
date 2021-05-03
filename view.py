@@ -42,22 +42,22 @@ class View:
                                width=4)
 
     def draw_winner(self, win, winner):
-        self.draw_squares(win)
+        #self.draw_squares(win)
         large_font = pygame.font.SysFont('comics', 40)
-        winner = large_font.render('The winner is : ' + str(winner), True, (255, 255, 255))
-        win.blit(winner, (650 / 2 - winner.get_width() / 2, 200))
+        winner = large_font.render('The winner is : ' + str(winner), True, BLACK)
+        win.blit(winner, (250, 200))
 
     def draw_rematch(self, win):
-        win.fill(WHITE)
+        win.fill(GREY)
         font = pygame.font.SysFont('comics', 40)
-        rematch = font.render('Would You Like A Rematch ?', True, BLACK)
-        win.blit(rematch, (700 / 2 - rematch.get_width() / 2, 250))
+        rematch = font.render('Would you like a rematch?', True, BLACK)
+        win.blit(rematch, (820 / 2 - rematch.get_width() / 2, 250))
         yes = font.render('Yes', True, WHITE)
         no = font.render('No', True, WHITE)
-        pygame.draw.rect(win, GREEN, (150, 450, 100, 50))
-        pygame.draw.rect(win, RED, (450, 450, 100, 50))
-        win.blit(yes, (175, 460))
-        win.blit(no, (482, 461))
+        pygame.draw.rect(win, GREEN, (250, 350, 100, 50))
+        pygame.draw.rect(win, RED, (450, 350, 100, 50))
+        win.blit(yes, (275, 362))
+        win.blit(no, (482, 362))
 
     def draw_undo(self, win, player_turn):
         font = pygame.font.SysFont('comics', 23)

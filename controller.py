@@ -43,8 +43,10 @@ class Controller:
                 timer_white = time_white.get()
 
                 self.seconds_white = 60 - (timer_white % 60)
-                self.minutes_white = MINUTES_PER_PLAYER - timer_white / 60
-
+                self.minutes_white = 0 - timer_white / 60
+                if int(self.minutes_white) == 0 and int(self.seconds_white) == 0:
+                    self.model.winner = "BLACK"
+                    run = False
             else:
                 if not white_timer_flag:
                     time_white.pause()
@@ -56,7 +58,8 @@ class Controller:
 
                 self.seconds_black = 60 - (timer_black % 60)
                 self.minutes_black = MINUTES_PER_PLAYER - timer_black / 60
-
+                if int(self.minutes_black) == 0 and int(self.seconds_black) == 0:
+                    self.model.winner = WHITE
 
             pos = pygame.mouse.get_pos()
             if self.model.check_winner() is not None:
@@ -96,17 +99,17 @@ class Controller:
                     run = False
                 # mouse pressed on rematch
                 if event.type == pygame.MOUSEBUTTONDOWN and (
-                        150 + 100 > mouse[0] > 150 and 450 + 50 > mouse[1] > 450):
+                        250 + 100 > mouse[0] > 250 and 400 > mouse[1] > 350):
                     self.rematch = True
                     run = False
 
                 # mouse pressed on end game
                 if event.type == pygame.MOUSEBUTTONDOWN and (
-                        450 + 100 > mouse[0] > 450 and 450 + 50 > mouse[1] > 450):
+                        450 + 100 > mouse[0] > 450 and 350 + 50 > mouse[1] > 350):
                     run = False
 
-            self.view.draw_winner(WIN, self.model.winner)
             self.view.draw_rematch(WIN)
+            self.view.draw_winner(WIN, self.model.winner)
             pygame.display.update()
 
     def update_game(self):
