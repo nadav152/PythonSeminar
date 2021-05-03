@@ -81,7 +81,7 @@ class View:
         win.blit(black_render, (680, 210))
 
     def draw_timer(self, win, minutes, seconds):
-        font = pygame.font.SysFont('comics', 23)
+        font = pygame.font.SysFont('David', 23)
         min_str = str(int(minutes))
         if minutes < 10:
             min_str = "0" + str(int(minutes))
