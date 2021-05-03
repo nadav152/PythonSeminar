@@ -43,7 +43,7 @@ class Controller:
                 timer_white = time_white.get()
 
                 self.seconds_white = 60 - (timer_white % 60)
-                self.minutes_white = 0 - timer_white / 60
+                self.minutes_white = MINUTES_PER_PLAYER - timer_white / 60
                 if int(self.minutes_white) == 0 and int(self.seconds_white) == 0:
                     self.model.winner = "BLACK"
                     run = False
@@ -59,7 +59,8 @@ class Controller:
                 self.seconds_black = 60 - (timer_black % 60)
                 self.minutes_black = MINUTES_PER_PLAYER - timer_black / 60
                 if int(self.minutes_black) == 0 and int(self.seconds_black) == 0:
-                    self.model.winner = WHITE
+                    self.model.winner = "WHITE"
+                    run = False
 
             pos = pygame.mouse.get_pos()
             if self.model.check_winner() is not None:
