@@ -1,8 +1,9 @@
 from model import Model
 from view import View
 from constants import *
-import time
-
+import time as time1
+import time as time2
+from ResumableTimer import ResumableTimer
 class Controller:
 
     def __init__(self):
@@ -20,18 +21,96 @@ class Controller:
     def main(self):
         run = True
         clock = pygame.time.Clock()
-        start_time = time.time()
+        # start_time1 = time1.time()
+        # start_time2 = time2.time()
+        #
+        # start_time2 = time2.time()
+        # gap_white_flag = False
+        # gap_black_flag = True
+        # gap_black = 0
+
+        # pause_time2 = start_time2
+
+        time_white = ResumableTimer()
+        time_black = ResumableTimer()
+        time_white.start()
+        time_white.pause()
+        time_black.start()
+        time_black.pause()
+        white_timer_flag = False
+        black_timer_flag = False
         while run:
             clock.tick(FPS)
-            curr_time = time.time()
-            exact_time = curr_time - start_time
             if self.model.turn == WHITE:
-                self.seconds_white = 60 - exact_time % 60
-                self.minutes_white = MINUTES_PER_PLAYER - exact_time / 60
+                if not black_timer_flag:
+                    time_black.pause()
+                    black_timer_flag = True
+
+                white_timer_flag = False
+                time_white.resume()
+                timer_white = time_white.get()
+
+                self.seconds_white = 60 - (timer_white % 60)
+                self.minutes_white = MINUTES_PER_PLAYER - timer_white / 60
 
             else:
-                self.seconds_black = 60 - exact_time % 60
-                self.minutes_black = MINUTES_PER_PLAYER - exact_time / 60
+                if not white_timer_flag:
+                    time_white.pause()
+                    white_timer_flag = True
+
+                black_timer_flag = False
+                time_black.resume()
+                timer_black = time_black.get()
+
+                self.seconds_black = 60 - (timer_black % 60)
+                self.minutes_black = MINUTES_PER_PLAYER - timer_black / 60
+
+            # if self.model.turn == WHITE:
+            #     pause_time2 = time2.time()
+            #     curr_time1 = pause_time1
+            #     exact_time = curr_time1 - start_time1
+            #     self.seconds_white = 60 - (exact_time % 60)
+            #     self.minutes_white = MINUTES_PER_PLAYER - exact_time / 60
+            # else:
+            #     pause_time1 = time1.time()
+            #     curr_time2 = time2.time()
+            #     exact_time2 = curr_time2 - pause_time2
+            #     self.seconds_black = 60 - exact_time2 % 60
+            #     self.minutes_black = MINUTES_PER_PLAYER - exact_time2 / 60
+            # if self.model.turn == WHITE:
+            #     time_white.resume()
+            #     print(time_white.timeout)
+          #   if self.model.turn == WHITE:
+          #       gap_black_flag = False
+          #       if gap_white_flag is False:
+          #           gap_white_min = int(self.minutes_white) - int(self.minutes_black)
+          #           if self.minutes_black == 20:
+          #               gap_white_min = 0
+          #           if self.seconds_white > self.seconds_black:
+          #               gap_white_sec = int(self.seconds_white) - int(self.seconds_black)
+          #               gap_white_sec = gap_white_sec - gap_white_min * 60
+          #           else:
+          #               # gap_white_min = int(self.minutes_white) - int(self.minutes_black)
+          #               # if gap_white_min == 0:
+          #               gap_white_sec = int(self.seconds_black) - int(self.seconds_white)
+          #               # else:
+          #               #     gap_white_sec = (int(self.seconds_black) - int(self.seconds_white)) * -1
+          #              # gap_white_sec = gap_white_sec - gap_white_min * 60
+          #           print(gap_white_sec)
+          #           gap_white_flag = True
+          #       self.seconds_white = 60 - (exact_time % 60) + abs(gap_white_sec)
+          #       self.minutes_white = MINUTES_PER_PLAYER - exact_time / 60 + abs(gap_white_min)
+          #       if self.seconds_white > 60:
+          #           self.seconds_white -= 60
+          #           if gap_white_sec > 60:
+          #               self.minutes_white += 1
+          # #  else:
+          #       gap_white_flag = False
+          #       # if gap_black_flag is False:
+          #       #     gap_black = ((int(self.seconds_black) - int(self.seconds_white))) % 60
+          #       #     gap_black_flag = True
+          #       self.seconds_black = 60 - exact_time2 % 60 #+ abs(gap_black)
+          #       self.minutes_black = MINUTES_PER_PLAYER - exact_time / 60
 
             pos = pygame.mouse.get_pos()
             if self.model.check_winner() is not None:
@@ -94,7 +173,6 @@ class Controller:
 
     def get_row_col_from_mouse(self, pos):
         x, y = pos
-        print(x, y)
         if y >= HEIGHT - 5 or x >= WIDTH - 5:
             return 0, 0
         row = y // SQUARE_SIZE
