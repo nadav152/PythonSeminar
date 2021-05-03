@@ -32,6 +32,7 @@ class Controller:
         black_timer_flag = False
         while run:
             clock.tick(FPS)
+
             if self.model.turn == WHITE:
                 if not black_timer_flag:
                     time_black.pause()
@@ -66,8 +67,8 @@ class Controller:
                     return
 
                 if event.type == pygame.MOUSEBUTTONDOWN and (
-                        700 + 100 > pos[0] > 700 and 100 + 50 > pos[1] > 100):
-                    self.model.re_do()
+                        700 + 250 > pos[0] > 700 and 250 + 50 > pos[1] > 100):
+                    self.model.undo()
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     row, col = self.get_row_col_from_mouse(pos)

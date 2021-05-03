@@ -18,7 +18,7 @@ class Model:
         self.board_stack = []
         self.memento = Memento()
 
-    def re_do(self):
+    def undo(self):
         state = self.memento.undo()
 
         if state:
