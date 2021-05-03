@@ -89,9 +89,21 @@ class View:
 
         time_render_white = font.render(time_str_white, True, (36, 34, 34))
         time_render_black = font.render(time_str_black, True, (36, 34, 34))
-        win.blit(time_render_white, (680, 550))
-        win.blit(time_render_black, (680, 50))
-
+        timer_x = 715
+        white_timer_y = 550
+        black_timer_y = 50
+        win.blit(time_render_white, (timer_x, white_timer_y))
+        win.blit(time_render_black, (timer_x, black_timer_y))
+        # White Timer Border
+        pygame.draw.line(win, BLACK, (timer_x - 5, white_timer_y - 5), (timer_x + 55, white_timer_y - 5), 2)
+        pygame.draw.line(win, BLACK, (timer_x - 5, white_timer_y - 5), (timer_x - 5, white_timer_y + 25), 2)
+        pygame.draw.line(win, BLACK, (timer_x - 5, white_timer_y + 25), (timer_x + 55, white_timer_y + 25), 2)
+        pygame.draw.line(win, BLACK, (timer_x + 55, white_timer_y - 5), (timer_x + 55, white_timer_y + 25), 2)
+        #Black Timer Border
+        pygame.draw.line(win, BLACK, (timer_x - 5, black_timer_y - 5), (timer_x + 55, black_timer_y - 5), 2)
+        pygame.draw.line(win, BLACK, (timer_x - 5, black_timer_y - 5), (timer_x - 5, black_timer_y + 25), 2)
+        pygame.draw.line(win, BLACK, (timer_x - 5, black_timer_y + 25), (timer_x + 55, black_timer_y + 25), 2)
+        pygame.draw.line(win, BLACK, (timer_x + 55, black_timer_y - 5), (timer_x + 55, black_timer_y + 25), 2)
 
 
     def conver_turn_to_str(self, player_turn):
