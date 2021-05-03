@@ -1,7 +1,7 @@
 from model import Model
 from view import View
 from constants import *
-
+import time
 
 class Controller:
 
@@ -16,8 +16,14 @@ class Controller:
     def main(self):
         run = True
         clock = pygame.time.Clock()
+        start_time = time.time()
         while run:
             clock.tick(FPS)
+            curr_time = time.time()
+            exact_time = curr_time - start_time
+            self.seconds = 60 - exact_time % 60
+            self.minutes = MINUTES_PER_PLAYER - exact_time / 60
+
             pos = pygame.mouse.get_pos()
             if self.model.check_winner() is not None:
                 run = False
@@ -74,6 +80,7 @@ class Controller:
         self.view.draw_valid_moves(WIN, self.model.valid_moves)
         self.view.draw_undo(WIN, self.model.turn)
         self.view.draw_remain_undoes(WIN, self.model.white_undo_left, self.model.black_undo_left)
+        self.view.draw_timer(WIN, self.minutes, self.seconds)
         pygame.display.update()
 
     def get_row_col_from_mouse(self, pos):

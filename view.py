@@ -80,6 +80,19 @@ class View:
         win.blit(white_render, (680, 180))
         win.blit(black_render, (680, 210))
 
+    def draw_timer(self, win, minutes, seconds):
+        font = pygame.font.SysFont('comics', 23)
+        min_str = str(int(minutes))
+        if minutes < 10:
+            min_str = "0" + str(int(minutes))
+        sec_str = str(int(seconds))
+        if seconds < 10:
+            sec_str = "0" + str(int(seconds))
+        time_str = min_str + ":" + sec_str
+        time_render = font.render(time_str,True, (36, 34, 34))
+        win.blit(time_render, (680, 400))
+
+
     def conver_turn_to_str(self, player_turn):
         if player_turn == WHITE:
             return 'Black'
