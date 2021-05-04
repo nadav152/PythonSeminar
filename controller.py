@@ -1,9 +1,9 @@
 from model import Model
 from view import View
 from constants import *
-import time as time1
-import time as time2
 from ResumableTimer import ResumableTimer
+
+
 class Controller:
 
     def __init__(self):
@@ -24,64 +24,81 @@ class Controller:
 
         time_white = ResumableTimer()
         time_black = ResumableTimer()
-        time_white.start()
-        time_white.pause()
-        time_black.start()
-        time_black.pause()
+        self.start_timers(time_black, time_white)
         white_timer_flag = False
         black_timer_flag = False
         while run:
             clock.tick(FPS)
-
-            if self.model.turn == WHITE:
-                if not black_timer_flag:
-                    time_black.pause()
-                    black_timer_flag = True
-
-                white_timer_flag = False
-                time_white.resume()
-                timer_white = time_white.get()
-
-                self.seconds_white = 60 - (timer_white % 60)
-                self.minutes_white = MINUTES_PER_PLAYER - timer_white / 60
-                if int(self.minutes_white) == 0 and int(self.seconds_white) == 0:
-                    self.model.winner = "BLACK"
-                    run = False
-            else:
-                if not white_timer_flag:
-                    time_white.pause()
-                    white_timer_flag = True
-
-                black_timer_flag = False
-                time_black.resume()
-                timer_black = time_black.get()
-
-                self.seconds_black = 60 - (timer_black % 60)
-                self.minutes_black = MINUTES_PER_PLAYER - timer_black / 60
-                if int(self.minutes_black) == 0 and int(self.seconds_black) == 0:
-                    self.model.winner = "WHITE"
-                    run = False
+            # Updating player timers
+            run, black_timer_flag, white_timer_flag = \
+                self.update_players_timers(black_timer_flag, run, time_black, time_white, white_timer_flag)
 
             pos = pygame.mouse.get_pos()
             if self.model.check_winner() is not None:
                 run = False
 
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return
-
-                if event.type == pygame.MOUSEBUTTONDOWN and (
-                        700 + 250 > pos[0] > 700 and 250 + 50 > pos[1] > 100):
-                    self.model.undo()
-
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    row, col = self.get_row_col_from_mouse(pos)
-                    self.model.select_area(row, col)
+                self.check_game_events(event, pos)
 
             self.update_game()
 
         self.show_winner()
         self.check_for_rematch()
+
+    def start_timers(self, time_black, time_white):
+        time_white.start()
+        time_white.pause()
+        time_black.start()
+        time_black.pause()
+
+    def check_game_events(self, event, pos):
+        if event.type == pygame.QUIT:
+            pygame.quit()
+        if event.type == pygame.MOUSEBUTTONDOWN and (
+                700 + 250 > pos[0] > 700 and 250 + 50 > pos[1] > 100):
+            self.model.undo()
+
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            row, col = self.get_row_col_from_mouse(pos)
+            self.model.select_area(row, col)
+
+    def update_players_timers(self, black_timer_flag, run, time_black, time_white, white_timer_flag):
+        if self.model.turn == WHITE:
+            black_timer_flag, run, white_timer_flag = self.set_white_player_timer(black_timer_flag, run, time_black,
+                                                                                  time_white, white_timer_flag)
+        else:
+            black_timer_flag, run, white_timer_flag = self.set_black_player_timer(black_timer_flag, run, time_black,
+                                                                                  time_white,
+                                                                                  white_timer_flag)
+        return run, black_timer_flag, white_timer_flag
+
+    def set_white_player_timer(self, black_timer_flag, run, time_black, time_white, white_timer_flag):
+        if not black_timer_flag:
+            time_black.pause()
+            black_timer_flag = True
+        white_timer_flag = False
+        time_white.resume()
+        timer_white = time_white.get()
+        self.seconds_white = 60 - (timer_white % 60)
+        self.minutes_white = MINUTES_PER_PLAYER - timer_white / 60
+        if int(self.minutes_white) == 0 and int(self.seconds_white) == 0:
+            self.model.winner = "BLACK"
+            run = False
+        return black_timer_flag, run, white_timer_flag
+
+    def set_black_player_timer(self, black_timer_flag, run, time_black, time_white, white_timer_flag):
+        if not white_timer_flag:
+            time_white.pause()
+            white_timer_flag = True
+        black_timer_flag = False
+        time_black.resume()
+        timer_black = time_black.get()
+        self.seconds_black = 60 - (timer_black % 60)
+        self.minutes_black = MINUTES_PER_PLAYER - timer_black / 60
+        if int(self.minutes_black) == 0 and int(self.seconds_black) == 0:
+            self.model.winner = "WHITE"
+            run = False
+        return black_timer_flag, run, white_timer_flag
 
     def check_for_rematch(self):
         if self.rematch:

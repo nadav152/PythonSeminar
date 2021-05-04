@@ -6,8 +6,6 @@ class View:
     def __init__(self):
         pass
 
-    #     TODO does the view needs to know the controller ?
-
     def draw_game(self, win, board):
         self.draw_squares(win)
         for row in range(ROWS):
@@ -42,7 +40,7 @@ class View:
                                width=4)
 
     def draw_winner(self, win, winner):
-        #self.draw_squares(win)
+        # self.draw_squares(win)
         large_font = pygame.font.SysFont('comics', 40)
         winner = large_font.render('The winner is : ' + str(winner), True, BLACK)
         win.blit(winner, (250, 200))
@@ -99,12 +97,11 @@ class View:
         pygame.draw.line(win, BLACK, (timer_x - 5, white_timer_y - 5), (timer_x - 5, white_timer_y + 25), 2)
         pygame.draw.line(win, BLACK, (timer_x - 5, white_timer_y + 25), (timer_x + 55, white_timer_y + 25), 2)
         pygame.draw.line(win, BLACK, (timer_x + 55, white_timer_y - 5), (timer_x + 55, white_timer_y + 25), 2)
-        #Black Timer Border
+        # Black Timer Border
         pygame.draw.line(win, BLACK, (timer_x - 5, black_timer_y - 5), (timer_x + 55, black_timer_y - 5), 2)
         pygame.draw.line(win, BLACK, (timer_x - 5, black_timer_y - 5), (timer_x - 5, black_timer_y + 25), 2)
         pygame.draw.line(win, BLACK, (timer_x - 5, black_timer_y + 25), (timer_x + 55, black_timer_y + 25), 2)
         pygame.draw.line(win, BLACK, (timer_x + 55, black_timer_y - 5), (timer_x + 55, black_timer_y + 25), 2)
-
 
     def conver_turn_to_str(self, player_turn):
         if player_turn == WHITE:
