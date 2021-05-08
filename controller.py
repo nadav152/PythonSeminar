@@ -8,14 +8,14 @@ class Controller:
 
     def __init__(self):
         self.reset_self_values()
-        self.seconds_black = 0
-        self.minutes_black = 20
-        self.seconds_white = 0
-        self.minutes_white = 0
 
     def reset_self_values(self):
         self.model = Model()
         self.view = View()
+        self.seconds_black = 0
+        self.minutes_black = 20
+        self.seconds_white = 0
+        self.minutes_white = 0
         self.rematch = False
 
     def main(self):
