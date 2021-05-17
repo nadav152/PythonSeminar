@@ -122,6 +122,7 @@ class Model:
         return moves
 
     def travese_left(self, start, stop, step, color, left, skipped=None):
+
         if skipped is None:
             skipped = []
         moves = {}
@@ -138,15 +139,15 @@ class Model:
                     moves[(r, left)] = last + skipped
                 else:
                     moves[(r, left)] = last
+                print(moves[(r, left)])
 
                 if last:
                     if step == -1:
                         row = max(r - 3, -1)
                     else:
                         row = min(r + 3, ROWS)
-
-                    moves.update(self.travese_left(r + step, row, step, color, left - 1, skipped=last))
-                    moves.update(self.travese_right(r + step, row, step, color, left + 1, skipped=last))
+                    moves.update(self.travese_left(r + step, row, step, color, left - 1, skipped=moves[(r, left)]))
+                    moves.update(self.travese_right(r + step, row, step, color, left + 1, skipped=moves[(r, left)]))
                 break
             elif current.color == color:
                 break
@@ -180,8 +181,8 @@ class Model:
                     else:
                         row = min(r + 3, ROWS)
 
-                    moves.update(self.travese_left(r + step, row, step, color, right - 1, skipped=last))
-                    moves.update(self.travese_right(r + step, row, step, color, right + 1, skipped=last))
+                    moves.update(self.travese_left(r + step, row, step, color, right - 1, skipped=moves[(r, right)]))
+                    moves.update(self.travese_right(r + step, row, step, color, right + 1, skipped=moves[(r, right)]))
                 break
             elif current.color == color:
                 break
