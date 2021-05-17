@@ -7,6 +7,8 @@ class View:
         pass
 
     def draw_game(self, win, board):
+        win.fill(WHITE)
+        win.blit(INSTRUCTIONS, (850, 50))
         self.draw_squares(win)
         for row in range(ROWS):
             for col in range(COLS):
@@ -15,7 +17,6 @@ class View:
                     piece.draw_piece(win)
 
     def draw_squares(self, win):
-        win.fill(WHITE)
         for row in range(ROWS):
             for col in range(COLS):
                 if (col % 2 != 0 and row % 2 != 0) or (col % 2 == 0 and row % 2 == 0):
@@ -46,7 +47,7 @@ class View:
         win.blit(winner, (250, 200))
 
     def draw_rematch(self, win):
-        win.fill(GREY)
+        win.fill(WHITE)
         font = pygame.font.SysFont('comics', 40)
         rematch = font.render('Would you like a rematch?', True, BLACK)
         win.blit(rematch, (820 / 2 - rematch.get_width() / 2, 250))
@@ -57,12 +58,40 @@ class View:
         win.blit(yes, (275, 362))
         win.blit(no, (482, 362))
 
+    def draw_menu(self, win):
+        pos = pygame.mouse.get_pos()
+        win.fill(WHITE)
+        win.blit(INSTRUCTIONS, (10, 10))
+        x = 380
+        y = 500
+        color = BLUE
+        if 380 + 100 > pos[0] > 380 and 500 + 40 > pos[1] > 500:
+            color = DARK_BLUE
+
+        pygame.draw.rect(win, color, (380, 500, 100, 40))
+        text = "  Start"
+        font = pygame.font.SysFont("David", 32)
+        outline_font = pygame.font.SysFont("David", 32)
+
+        outline_text = outline_font.render(text, True, BLACK)
+        button_text = font.render(text, True, WHITE)
+        win.blit(outline_text, (x + 7, y + 10))
+        win.blit(button_text, (x + 5, y + 8))
+        pygame.draw.line(win, BLACK, (x, y), (x, y + 40), 2)
+        pygame.draw.line(win, BLACK, (x, y), (x + 100, y), 2)
+        pygame.draw.line(win, BLACK, (x, y + 40), (x + 100, y + 40), 2)
+        pygame.draw.line(win, BLACK, (x + 100, y), (x + 100, y + 40), 2)
+
     def draw_undo(self, win, player_turn):
         font = pygame.font.SysFont('comics', 23)
         turn = self.conver_turn_to_str(player_turn)
         player_undo = turn + ' Undo'
         player_undo = font.render(player_undo, True, (36, 34, 34))
-        pygame.draw.rect(win, GREY, (700, 250, 100, 50))
+        color = GREY
+        pos = pygame.mouse.get_pos()
+        if 700 + 250 > pos[0] > 700 and 250 + 50 > pos[1] > 250:
+            color = DARK_GREY
+        pygame.draw.rect(win, color, (700, 250, 100, 50))
         win.blit(player_undo, (710, 270))
         pygame.draw.line(win, BLACK, (700, 250), (800, 250), 2)
         pygame.draw.line(win, BLACK, (700, 250), (700, 300), 2)

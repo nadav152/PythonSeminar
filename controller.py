@@ -18,6 +18,26 @@ class Controller:
         self.minutes_white = 0
         self.rematch = False
 
+    def start_game(self):
+        run = True
+        start = False
+        while run:
+            mouse = pygame.mouse.get_pos()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                # mouse pressed on start game
+                if event.type == pygame.MOUSEBUTTONDOWN and (
+                        380 + 100 > mouse[0] > 380 and 500 + 40 > mouse[1] > 500):
+                    start = True
+                    run = False
+
+            self.view.draw_menu(WIN)
+            pygame.display.update()
+        if start:
+            self.main()
+        pygame.quit()
+
     def main(self):
         run = True
         clock = pygame.time.Clock()
@@ -58,7 +78,7 @@ class Controller:
 
     def check_game_events(self, event, pos):
         if event.type == pygame.MOUSEBUTTONDOWN and (
-                700 + 250 > pos[0] > 700 and 250 + 50 > pos[1] > 100):
+                700 + 250 > pos[0] > 700 and 250 + 50 > pos[1] > 250):
             self.model.undo()
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -157,4 +177,5 @@ if __name__ == '__main__':
     pygame.display.set_caption('Checkers')
 
     checkers = Controller()
-    checkers.main()
+    checkers.start_game()
+    #checkers.main()
