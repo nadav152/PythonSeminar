@@ -47,7 +47,7 @@ class Controller:
         self.start_timers(time_black, time_white)
         white_timer_flag = False
         black_timer_flag = False
-        ask_rematach = False
+        ask_rematch = False
         while run:
             clock.tick(FPS)
             # Updating player timers
@@ -57,18 +57,16 @@ class Controller:
             pos = pygame.mouse.get_pos()
             if self.model.check_winner() is not None:
                 run = False
-                ask_rematach = True
+                ask_rematch = True
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
                 self.check_game_events(event, pos)
             self.update_game()
-        if ask_rematach:
-            self.show_winner()
-            self.check_for_rematch()
-        else:
-            pygame.quit()
+        self.show_winner()
+        self.check_for_rematch()
+        pygame.quit()
 
     def start_timers(self, time_black, time_white):
         time_white.start()
@@ -148,11 +146,14 @@ class Controller:
                 if event.type == pygame.MOUSEBUTTONDOWN and (
                         450 + 100 > mouse[0] > 450 and 350 + 50 > mouse[1] > 350):
                     run = False
-
             self.view.draw_rematch(WIN)
             self.view.draw_winner(WIN, self.model.winner)
             pygame.display.update()
+
+        self.check_for_rematch()
+
         pygame.quit()
+
     def update_game(self):
         self.view.draw_game(WIN, self.model.board)
         self.view.draw_valid_moves(WIN, self.model.valid_moves)
