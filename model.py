@@ -139,7 +139,6 @@ class Model:
                     moves[(r, left)] = last + skipped
                 else:
                     moves[(r, left)] = last
-                print(moves[(r, left)])
 
                 if last:
                     if step == -1:
