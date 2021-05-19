@@ -16,6 +16,7 @@ class Model:
         self.selected_piece = None
         self.winner = None
         self.board_stack = []
+        self.first_turn = True
         self.memento = Memento()
 
     def undo(self):
@@ -30,6 +31,7 @@ class Model:
                 self.black_kings = state.black_kings
                 self.white_kings = state.white_kings
                 self.turn = state.turn
+                self.first_turn = state.first_turn
                 self.valid_moves = {}
 
     def create_board_array(self):
@@ -49,7 +51,7 @@ class Model:
     def select_area(self, row, col):
         if self.selected_piece and (row, col) in self.valid_moves:
             self.memento.push(self.board, self.black_left, self.white_left, self.black_kings, self.white_kings,
-                              self.turn)
+                              self.turn, self.first_turn)
             result = self.check_possible_movement(row, col)
 
             if result:
@@ -193,6 +195,8 @@ class Model:
 
     def change_turn(self):
         self.valid_moves = {}
+        if self.first_turn:
+            self.first_turn = False
         if self.turn == BLACK:
             self.turn = WHITE
         else:

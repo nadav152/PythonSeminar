@@ -8,7 +8,7 @@ class View:
 
     def draw_game(self, win, board):
         win.fill(WHITE)
-        win.blit(INSTRUCTIONS, (850, 50))
+        win.blit(EXIT, (810, 12))
         self.draw_squares(win)
         for row in range(ROWS):
             for col in range(COLS):
@@ -82,7 +82,13 @@ class View:
         pygame.draw.line(win, BLACK, (x, y + 40), (x + 100, y + 40), 2)
         pygame.draw.line(win, BLACK, (x + 100, y), (x + 100, y + 40), 2)
 
-    def draw_undo(self, win, player_turn):
+    def draw_undo(self, win, player_turn, first_turn, black_undo_left, white_undo_left):
+        if first_turn:
+            return
+        if player_turn == WHITE and black_undo_left == 0:
+            return
+        if player_turn == BLACK and white_undo_left == 0:
+            return
         font = pygame.font.SysFont('comics', 23)
         turn = self.conver_turn_to_str(player_turn)
         player_undo = turn + ' Undo'

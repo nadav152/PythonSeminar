@@ -47,7 +47,8 @@ class Controller:
         self.start_timers(time_black, time_white)
         white_timer_flag = False
         black_timer_flag = False
-        ask_rematch = False
+        insturctions = False
+        quit_game = False
         while run:
             clock.tick(FPS)
             # Updating player timers
@@ -57,16 +58,26 @@ class Controller:
             pos = pygame.mouse.get_pos()
             if self.model.check_winner() is not None:
                 run = False
-                ask_rematch = True
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+                    quit_game = True
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    if 810 + 30 > pos[0] > 810 and 12 + 30 > pos[1] > 12:
+                        run = False
+                        insturctions = True
+                        break
                 self.check_game_events(event, pos)
             self.update_game()
-        self.show_winner()
-        self.check_for_rematch()
-        pygame.quit()
+        if insturctions:
+            self.start_game()
+        elif quit_game:
+            pygame.quit()
+        else:
+            self.show_winner()
+            self.check_for_rematch()
 
     def start_timers(self, time_black, time_white):
         time_white.start()
@@ -157,7 +168,7 @@ class Controller:
     def update_game(self):
         self.view.draw_game(WIN, self.model.board)
         self.view.draw_valid_moves(WIN, self.model.valid_moves)
-        self.view.draw_undo(WIN, self.model.turn)
+        self.view.draw_undo(WIN, self.model.turn, self.model.first_turn, self.model.black_undo_left, self.model.white_undo_left)
         self.view.draw_remain_undoes(WIN, self.model.white_undo_left, self.model.black_undo_left)
         self.view.draw_timer(WIN, self.minutes_white, self.seconds_white, self.minutes_black, self.seconds_black)
         pygame.display.update()
@@ -179,4 +190,3 @@ if __name__ == '__main__':
 
     checkers = Controller()
     checkers.start_game()
-    #checkers.main()
