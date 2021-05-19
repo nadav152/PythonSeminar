@@ -10,6 +10,9 @@ class Controller:
         self.reset_self_values()
 
     def reset_self_values(self):
+        """"
+        reset all values for new game
+        """
         self.model = Model()
         self.view = View()
         self.seconds_black = 0
@@ -19,6 +22,9 @@ class Controller:
         self.rematch = False
 
     def start_game(self):
+        """"
+        Start Screen, Instructions and "Start" button
+        """
         run = True
         start = False
         while run:
@@ -39,6 +45,9 @@ class Controller:
         pygame.quit()
 
     def main(self):
+        """"
+        Run the checkers game
+        """
         run = True
         clock = pygame.time.Clock()
 
@@ -47,7 +56,7 @@ class Controller:
         self.start_timers(time_black, time_white)
         white_timer_flag = False
         black_timer_flag = False
-        insturctions = False
+        instructions = False
         quit_game = False
         while run:
             clock.tick(FPS)
@@ -67,11 +76,12 @@ class Controller:
                     pos = pygame.mouse.get_pos()
                     if 810 + 30 > pos[0] > 810 and 12 + 30 > pos[1] > 12:
                         run = False
-                        insturctions = True
+                        instructions = True
                         break
                 self.check_game_events(event, pos)
             self.update_game()
-        if insturctions:
+        if instructions:
+            self.reset_self_values()
             self.start_game()
         elif quit_game:
             pygame.quit()
@@ -80,12 +90,18 @@ class Controller:
             self.check_for_rematch()
 
     def start_timers(self, time_black, time_white):
+        """"
+        Initialize timers to pause and resume
+        """
         time_white.start()
         time_white.pause()
         time_black.start()
         time_black.pause()
 
     def check_game_events(self, event, pos):
+        """"
+        check if undo or player movement
+        """
         if event.type == pygame.MOUSEBUTTONDOWN and (
                 700 + 250 > pos[0] > 700 and 250 + 50 > pos[1] > 250):
             self.model.undo()
@@ -95,6 +111,9 @@ class Controller:
             self.model.select_area(row, col)
 
     def update_players_timers(self, black_timer_flag, run, time_black, time_white, white_timer_flag):
+        """"
+        update resume and pause timers for each player
+        """
         if self.model.turn == WHITE:
             black_timer_flag, run, white_timer_flag = self.set_white_player_timer(black_timer_flag, run, time_black,
                                                                                   time_white, white_timer_flag)
@@ -105,6 +124,9 @@ class Controller:
         return run, black_timer_flag, white_timer_flag
 
     def set_white_player_timer(self, black_timer_flag, run, time_black, time_white, white_timer_flag):
+        """"
+        pause and resume white timer
+        """
         if not black_timer_flag:
             time_black.pause()
             black_timer_flag = True
@@ -119,6 +141,9 @@ class Controller:
         return black_timer_flag, run, white_timer_flag
 
     def set_black_player_timer(self, black_timer_flag, run, time_black, time_white, white_timer_flag):
+        """"
+        pause and resume black timer
+        """
         if not white_timer_flag:
             time_white.pause()
             white_timer_flag = True
@@ -133,6 +158,9 @@ class Controller:
         return black_timer_flag, run, white_timer_flag
 
     def check_for_rematch(self):
+        """"
+        run new game if selected rematch
+        """
         if self.rematch:
             self.reset_self_values()
             self.main()
@@ -140,6 +168,9 @@ class Controller:
             pygame.quit()
 
     def show_winner(self):
+        """"
+        Run winner screen with buttons "YES", "NO".
+        """
         run = True
         while run:
             pygame.time.delay(100)
@@ -166,14 +197,20 @@ class Controller:
         pygame.quit()
 
     def update_game(self):
+        """"
+        update and draw game screen
+        """
         self.view.draw_game(WIN, self.model.board)
         self.view.draw_valid_moves(WIN, self.model.valid_moves)
         self.view.draw_undo(WIN, self.model.turn, self.model.first_turn, self.model.black_undo_left, self.model.white_undo_left)
         self.view.draw_remain_undoes(WIN, self.model.white_undo_left, self.model.black_undo_left)
-        self.view.draw_timer(WIN, self.minutes_white, self.seconds_white, self.minutes_black, self.seconds_black)
+        self.view.draw_timers(WIN, self.minutes_white, self.seconds_white, self.minutes_black, self.seconds_black)
         pygame.display.update()
 
     def get_row_col_from_mouse(self, pos):
+        """"
+        calculate x, y by mouse's postion
+        """
         x, y = pos
         if y >= HEIGHT - 5 or x >= WIDTH - 5:
             return 0, 0

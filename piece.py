@@ -16,6 +16,9 @@ class Piece:
         self.calc_pos()
 
     def calc_pos(self):
+        """"
+       Calculate x and y by row and column
+        """
         self.x = SQUARE_SIZE * self.col + SQUARE_SIZE // 2
         self.y = SQUARE_SIZE * self.row + SQUARE_SIZE // 2
 
@@ -23,6 +26,11 @@ class Piece:
         self.king = True
 
     def draw_piece(self, win):
+        """"
+        draw piece on screen
+        :param win: pygame screen
+        :return:
+        """
         radius = SQUARE_SIZE // 2 - self.PADDING
         if self.color == BLACK:
             pygame.draw.circle(win, GREY, (self.x, self.y), radius + self.OUTLINE)
@@ -34,6 +42,11 @@ class Piece:
             win.blit(CROWN, (self.x - CROWN.get_width() // 2, (self.y - 1) - CROWN.get_height() // 2))
 
     def move_piece(self, row, col):
+        """"
+        move piece on borad
+        :param row: new row, col: new column
+        :return:
+        """
         self.row = row
         self.col = col
         self.calc_pos()

@@ -20,11 +20,14 @@ class Model:
         self.memento = Memento()
 
     def undo(self):
+        """"
+        return board's state to last turn
+        """
         state = self.memento.undo()
 
         if state:
 
-            if self.player_has_turn(self.turn):
+            if self.player_can_undo(self.turn):
                 self.board = state.board
                 self.black_left = state.black_left
                 self.white_left = state.white_left
@@ -35,6 +38,9 @@ class Model:
                 self.valid_moves = {}
 
     def create_board_array(self):
+        """"
+        initialize board with pieces
+        """
         for row in range(ROWS):
             self.board.append([])
             for col in range(COLS):
@@ -49,13 +55,16 @@ class Model:
                     self.board[row].append(0)
 
     def select_area(self, row, col):
+        """"
+        select square and check moves
+        :param row: row location, col: column location
+        :return True if can move
+        """
         if self.selected_piece and (row, col) in self.valid_moves:
             self.memento.push(self.board, self.black_left, self.white_left, self.black_kings, self.white_kings,
                               self.turn, self.first_turn)
             result = self.check_possible_movement(row, col)
 
-            if result:
-                pass
             if not result:
                 self.selected_piece = None
                 self.select_area(row, col)
@@ -69,6 +78,11 @@ class Model:
         return False
 
     def check_possible_movement(self, row, col):
+        """"
+        check if piece can move to the square in (row, col)
+        :param row: new row location, col : new column location
+        :return: True if can move
+        """
         piece = self.get_piece(row, col)  # check if square is empty
         if self.selected_piece and piece == 0 and (row, col) in self.valid_moves:
             self.update_model_location(self.selected_piece, row, col)
@@ -84,6 +98,13 @@ class Model:
         return True
 
     def update_model_location(self, piece, row, col):
+        """"
+        move piece to new square
+        :param piece: one piece on board
+        row: new row location
+        col: new column location
+        :return:
+        """
         # update board array
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], \
                                                                  self.board[piece.row][piece.col]
@@ -99,6 +120,11 @@ class Model:
                     self.black_kings += 1
 
     def remove(self, pieces):
+        """"
+        remove dead pieces from the board
+        :param pieces: list of killed pieces
+        :return:
+        """
         for piece in pieces:
             self.board[piece.row][piece.col] = 0
             if piece != 0:
@@ -108,6 +134,11 @@ class Model:
                     self.black_left -= 1
 
     def get_valid_moves(self, piece):
+        """"
+        get piece's all valid moves
+        :param piece: one piece on board
+        :return: all piece's valid moves
+        """
         moves = {}
         left = piece.col - 1
         right = piece.col + 1
@@ -124,7 +155,11 @@ class Model:
         return moves
 
     def travese_left(self, start, stop, step, color, left, skipped=None):
-
+        """"
+        get piece's valid moves to left
+        :param piece: one piece on board
+        :return: all piece's valid moves to left
+        """
         if skipped is None:
             skipped = []
         moves = {}
@@ -159,6 +194,11 @@ class Model:
         return moves
 
     def travese_right(self, start, stop, step, color, right, skipped=None):
+        """"
+        get piece's valid moves to right
+        :param piece: one piece on board
+        :return: all piece's valid moves to right
+        """
         if skipped is None:
             skipped = []
         moves = {}
@@ -194,6 +234,9 @@ class Model:
         return moves
 
     def change_turn(self):
+        """"
+        change player turn
+        """
         self.valid_moves = {}
         if self.first_turn:
             self.first_turn = False
@@ -203,6 +246,9 @@ class Model:
             self.turn = BLACK
 
     def check_winner(self):
+        """"
+       check if game is finished and who is the winner
+        """
         if self.white_left == 0:
             self.winner = 'BLACK'
             return BLACK
@@ -215,7 +261,12 @@ class Model:
     def get_piece(self, row, col):
         return self.board[row][col]
 
-    def player_has_turn(self, turn):
+    def player_can_undo(self, turn):
+        """"
+        check if player can undo
+        :param turn: player's turn
+        :return true if the player can do undo
+        """
         if turn == BLACK and self.white_undo_left > 0:
             self.white_undo_left -= 1
             return True

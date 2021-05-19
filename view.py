@@ -7,6 +7,12 @@ class View:
         pass
 
     def draw_game(self, win, board):
+        """"
+        draw board with pieces and exit button
+        :param win: pygame screen
+        board: matrix of pieces
+        :return:
+        """
         win.fill(WHITE)
         win.blit(EXIT, (810, 12))
         self.draw_squares(win)
@@ -17,6 +23,11 @@ class View:
                     piece.draw_piece(win)
 
     def draw_squares(self, win):
+        """"
+        draw board squares
+        :param win: pygame screen
+        :return:
+        """
         for row in range(ROWS):
             for col in range(COLS):
                 if (col % 2 != 0 and row % 2 != 0) or (col % 2 == 0 and row % 2 == 0):
@@ -28,12 +39,22 @@ class View:
         self.draw_board_borders(win)
 
     def draw_board_borders(self, win):
+        """"
+        draw board black borders
+        :param win: pygame screen
+        :return:
+        """
         pygame.draw.line(win, BLACK, [0, 0], [0, WIDTH], 8)
         pygame.draw.line(win, BLACK, [0, 0], [HEIGHT, 0], 8)
         pygame.draw.line(win, BLACK, [HEIGHT, WIDTH], [0, WIDTH], 8)
         pygame.draw.line(win, BLACK, [HEIGHT, WIDTH], [HEIGHT, 0], 12)
 
     def draw_valid_moves(self, win, moves):
+        """"
+        draw red circles on squares the player can move on
+        :param win: pygame screen, moves: player's valid moves
+        :return:
+        """
         for move in moves:
             row, col = move
             pygame.draw.circle(win, RED,
@@ -41,12 +62,21 @@ class View:
                                width=4)
 
     def draw_winner(self, win, winner):
-        # self.draw_squares(win)
+        """"
+        write on screen the winner color player
+        :param win: pygame screen, winner: winner player
+        :return:
+        """
         large_font = pygame.font.SysFont('comics', 40)
         winner = large_font.render('The winner is : ' + str(winner), True, BLACK)
         win.blit(winner, (250, 200))
 
     def draw_rematch(self, win):
+        """"
+        write to screen if the players wants rematch, draw 2 button "YES", "NO"
+        :param win: pygame screen
+        :return:
+        """
         win.fill(WHITE)
         font = pygame.font.SysFont('comics', 40)
         rematch = font.render('Would you like a rematch?', True, BLACK)
@@ -59,6 +89,11 @@ class View:
         win.blit(no, (482, 362))
 
     def draw_menu(self, win):
+        """"
+        Draw instructions and "Start" button
+        :param win: pygame screen
+        :return:
+        """
         pos = pygame.mouse.get_pos()
         win.fill(WHITE)
         win.blit(INSTRUCTIONS, (10, 10))
@@ -83,6 +118,14 @@ class View:
         pygame.draw.line(win, BLACK, (x + 100, y), (x + 100, y + 40), 2)
 
     def draw_undo(self, win, player_turn, first_turn, black_undo_left, white_undo_left):
+        """"
+        Draw Undo button
+        :param win: pygame screen , player_turn: which one can do undo
+        first_turn: on first turn no one can undo
+        black_undo_left: if 0, black can't undo
+        white_undo_left: if 0, white can't undo
+        :return:
+        """
         if first_turn:
             return
         if player_turn == WHITE and black_undo_left == 0:
@@ -105,7 +148,13 @@ class View:
         pygame.draw.line(win, BLACK, (800, 250), (800, 300), 2)
 
     def draw_remain_undoes(self, win, white_player_undo, black_play_undo):
-
+        """"
+        write on screen how much remain undoes for each player
+        :param win: pygame screen
+        white_player_undo: write num of white's undo
+        black_play_undo: write num of black's undo
+        :return:
+        """
         font = pygame.font.SysFont('comics', 23)
         white_undoes = 'White Undo left : ' + str(white_player_undo)
         black_undoes = 'Black Undo left : ' + str(black_play_undo)
@@ -114,7 +163,12 @@ class View:
         win.blit(white_render, (680, 500))
         win.blit(black_render, (680, 100))
 
-    def draw_timer(self, win, minutes_white, seconds_white, minutes_black, seconds_black):
+    def draw_timers(self, win, minutes_white, seconds_white, minutes_black, seconds_black):
+        """"
+        draw timers to each player
+        :param win: pygame screen
+        :return:
+        """
         font = pygame.font.SysFont('David', 23)
 
         time_str_white = '{:02d}:{:02d}'.format(int(minutes_white), int(seconds_white))
@@ -139,6 +193,11 @@ class View:
         pygame.draw.line(win, BLACK, (timer_x + 55, black_timer_y - 5), (timer_x + 55, black_timer_y + 25), 2)
 
     def conver_turn_to_str(self, player_turn):
+        """"
+        convert color to string
+        :param player_turn: RGB color
+        :return:
+        """
         if player_turn == WHITE:
             return 'Black'
         else:
