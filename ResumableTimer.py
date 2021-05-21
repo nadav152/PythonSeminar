@@ -1,8 +1,7 @@
-from datetime import datetime
 import time
 
 
-class ResumableTimer:
+class ResumeAbleTimer:
 
     def __init__(self):
         self.start_time = None

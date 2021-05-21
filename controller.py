@@ -1,7 +1,7 @@
 from model import Model
 from view import View
 from constants import *
-from ResumableTimer import ResumableTimer
+from ResumableTimer import ResumeAbleTimer
 
 
 class Controller:
@@ -51,8 +51,8 @@ class Controller:
         run = True
         clock = pygame.time.Clock()
 
-        time_white = ResumableTimer()
-        time_black = ResumableTimer()
+        time_white = ResumeAbleTimer()
+        time_black = ResumeAbleTimer()
         self.start_timers(time_black, time_white)
         white_timer_flag = False
         black_timer_flag = False
