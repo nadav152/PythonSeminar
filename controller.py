@@ -80,6 +80,7 @@ class Controller:
                         break
                 self.check_game_events(event, pos)
             self.update_game()
+            self.model.check_no_piece_can_move(self.model.turn)
         if instructions:
             self.reset_self_values()
             self.start_game()
