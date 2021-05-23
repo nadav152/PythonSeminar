@@ -261,8 +261,12 @@ class Model:
     def check_no_piece_can_move(self, color):
         if self.white_left == 0 or self.black_left == 0:
             return False
+        if self.black_left > 5 and color is BLACK:
+            return False
+        if self.white_left > 5 and color is WHITE:
+            return False
 
-        if self.black_left < 3 or self.white_left < 3:
+        else:
             for row in range(ROWS):
                 for col in range(COLS):
                     piece = self.board[row][col]
