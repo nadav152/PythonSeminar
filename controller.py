@@ -66,7 +66,7 @@ class Controller:
 
             pos = pygame.mouse.get_pos()
             if self.model.check_winner() is not None:
-                run = False
+                break
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -80,14 +80,14 @@ class Controller:
                         break
                 self.check_game_events(event, pos)
             self.update_game()
-            self.model.check_no_piece_can_move(self.model.turn)
+            no_moves = self.model.check_no_piece_can_move(self.model.turn)
         if instructions:
             self.reset_self_values()
             self.start_game()
         elif quit_game:
             pygame.quit()
         else:
-            self.show_winner()
+            self.show_winner(no_moves)
             self.check_for_rematch()
 
     def start_timers(self, time_black, time_white):
@@ -168,7 +168,7 @@ class Controller:
         else:
             pygame.quit()
 
-    def show_winner(self):
+    def show_winner(self, no_moves):
         """"
         Run winner screen with buttons "YES", "NO".
         """
@@ -190,7 +190,7 @@ class Controller:
                         450 + 100 > mouse[0] > 450 and 350 + 50 > mouse[1] > 350):
                     run = False
             self.view.draw_rematch(WIN)
-            self.view.draw_winner(WIN, self.model.winner)
+            self.view.draw_winner(WIN, self.model.winner, no_moves)
             pygame.display.update()
 
         self.check_for_rematch()

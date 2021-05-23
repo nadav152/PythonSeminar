@@ -259,6 +259,9 @@ class Model:
         return None
 
     def check_no_piece_can_move(self, color):
+        if self.white_left == 0 or self.black_left == 0:
+            return False
+
         if self.black_left < 3 or self.white_left < 3:
             for row in range(ROWS):
                 for col in range(COLS):
@@ -266,12 +269,12 @@ class Model:
                     if piece != 0 and piece.color == color:
                         moves = self.get_valid_moves(piece)
                         if moves:
-                            return True
+                            return False
             if color == WHITE:
                 self.white_left = 0
             else:
                 self.black_left = 0
-            return False
+            return True
 
     def get_piece(self, row, col):
         return self.board[row][col]

@@ -61,13 +61,22 @@ class View:
                                ((col * SQUARE_SIZE + SQUARE_SIZE // 2), (row * SQUARE_SIZE + SQUARE_SIZE // 2)), 25,
                                width=4)
 
-    def draw_winner(self, win, winner):
+    def draw_winner(self, win, winner, no_moves):
         """"
         write on screen the winner color player
-        :param win: pygame screen, winner: winner player
+        :param win: pygame screen
+        :param winner: winner player
+        :param no_moves: True if Auto lose because no piece could move
         :return:
         """
-        large_font = pygame.font.SysFont('comics', 40)
+        if no_moves:
+            regular_font = pygame.font.SysFont('comics', 30)
+            loser = "White"
+            if winner == 'WHITE':
+                loser = "Black"
+            auto_lose = regular_font.render(str(loser) + ' had no possible moves!!' , True, BLACK)
+            win.blit(auto_lose, (250, 160))
+        large_font = pygame.font.SysFont('comics', 42)
         winner = large_font.render('The winner is : ' + str(winner), True, BLACK)
         win.blit(winner, (250, 200))
 
