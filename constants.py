@@ -18,5 +18,5 @@ BROWN = (153, 102, 51)
 LIGHT_BROWN = (255, 204, 102)
 
 CROWN = pygame.transform.scale(pygame.image.load('Assets/crown.png'), (35, 35))
-INSTRUCTIONS = pygame.transform.scale(pygame.image.load('Assets/Instructions.jpg'), (705, 494))
+INSTRUCTIONS = pygame.transform.scale(pygame.image.load('Assets/Instructions.jpg'), (760, 512))
 EXIT = pygame.transform.scale(pygame.image.load('Assets/cancel.png'), (30, 30))
