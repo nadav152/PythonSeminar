@@ -7,12 +7,6 @@ from ResumableTimer import ResumeAbleTimer
 class Controller:
 
     def __init__(self):
-        self.reset_self_values()
-
-    def reset_self_values(self):
-        """"
-        reset all values for new game
-        """
         self.model = Model()
         self.view = View()
         self.seconds_black = 0
@@ -20,6 +14,12 @@ class Controller:
         self.seconds_white = 0
         self.minutes_white = 0
         self.rematch = False
+
+    def reset_self_values(self):
+        """"
+        reset all values for new game
+        """
+        self.__init__()
 
     def start_game(self):
         """"
@@ -116,14 +116,14 @@ class Controller:
         """
         if self.model.turn == WHITE:
             black_timer_flag, run, white_timer_flag = self.set_white_player_timer(black_timer_flag, run, time_black,
-                                                                                  time_white, white_timer_flag)
+                                                                                  time_white)
         else:
-            black_timer_flag, run, white_timer_flag = self.set_black_player_timer(black_timer_flag, run, time_black,
+            black_timer_flag, run, white_timer_flag = self.set_black_player_timer( run, time_black,
                                                                                   time_white,
                                                                                   white_timer_flag)
         return run, black_timer_flag, white_timer_flag
 
-    def set_white_player_timer(self, black_timer_flag, run, time_black, time_white, white_timer_flag):
+    def set_white_player_timer(self, black_timer_flag, run, time_black, time_white):
         """"
         pause and resume white timer
         """
@@ -140,7 +140,7 @@ class Controller:
             run = False
         return black_timer_flag, run, white_timer_flag
 
-    def set_black_player_timer(self, black_timer_flag, run, time_black, time_white, white_timer_flag):
+    def set_black_player_timer(self, run, time_black, time_white, white_timer_flag):
         """"
         pause and resume black timer
         """
