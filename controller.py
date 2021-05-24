@@ -190,7 +190,7 @@ class Controller:
                         450 + 100 > mouse[0] > 450 and 350 + 50 > mouse[1] > 350):
                     run = False
             self.view.draw_rematch(WIN)
-            self.view.draw_winner(WIN, self.model.winner, no_moves)
+            self.view.draw_winner(WIN, self.model.winner, no_moves, self.model.white_left, self.model.black_left)
             pygame.display.update()
 
         self.check_for_rematch()

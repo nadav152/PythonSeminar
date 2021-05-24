@@ -266,24 +266,34 @@ class Model:
         """
         if self.white_left == 0 or self.black_left == 0:
             return False
-        if self.black_left > 5 and color is BLACK:
-            return False
-        if self.white_left > 5 and color is WHITE:
-            return False
+       # if self.black_left > 5 and color is BLACK:
+       #      return False
+       #  if self.white_left > 5 and color is WHITE:
+       #      return False
+        white_can_move = False
+        black_can_move = False
+        for row in range(ROWS):
+            for col in range(COLS):
+                piece = self.board[row][col]
+                if piece != 0:
+                    moves = self.get_valid_moves(piece)
+                    if moves:
+                        if piece.color is WHITE:
+                            white_can_move = True
+                        else:
+                            black_can_move = True
 
-        else:
-            for row in range(ROWS):
-                for col in range(COLS):
-                    piece = self.board[row][col]
-                    if piece != 0 and piece.color == color:
-                        moves = self.get_valid_moves(piece)
-                        if moves:
-                            return False
-            if color == WHITE:
-                self.white_left = 0
-            else:
-                self.black_left = 0
+        if not black_can_move and not white_can_move:
+            self.white_left = 0
+            self.black_left = 0
             return True
+
+        if not black_can_move and color == BLACK:
+            self.black_left = 0
+        elif not white_can_move and color == WHITE:
+            self.white_left = 0
+
+        return True
 
     def get_piece(self, row, col):
         return self.board[row][col]
