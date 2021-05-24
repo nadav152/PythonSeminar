@@ -104,7 +104,7 @@ class Controller:
         check if undo or player movement
         """
         if event.type == pygame.MOUSEBUTTONDOWN and (
-                700 + 250 > pos[0] > 700 and 250 + 50 > pos[1] > 250):
+                700 + 100 > pos[0] > 700 and 250 + 50 > pos[1] > 250):
             self.model.undo()
 
         elif event.type == pygame.MOUSEBUTTONDOWN:

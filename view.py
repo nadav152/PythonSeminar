@@ -147,7 +147,7 @@ class View:
         player_undo = font.render(player_undo, True, (36, 34, 34))
         color = GREY
         pos = pygame.mouse.get_pos()
-        if 700 + 250 > pos[0] > 700 and 250 + 50 > pos[1] > 250:
+        if 700 + 100 > pos[0] > 700 and 250 + 50 > pos[1] > 250:
             color = DARK_GREY
         pygame.draw.rect(win, color, (700, 250, 100, 50))
         win.blit(player_undo, (710, 270))
