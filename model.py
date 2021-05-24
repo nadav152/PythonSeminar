@@ -260,7 +260,7 @@ class Model:
 
     def check_no_piece_can_move(self, color):
         """"
-        draw red circles on squares the player can move on
+        Check for situation no piece can move in player turn. means automatic lose.
         :param color: player's turn
         :return: True if no possible moves to any piece -> auto lose.
         """
