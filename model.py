@@ -260,16 +260,13 @@ class Model:
 
     def check_no_piece_can_move(self, color):
         """"
-        Check for situation no piece can move in player turn. means automatic lose.
+        Check for situation no piece can move in player turn. means automatic lose. checks draw also.
         :param color: player's turn
         :return: True if no possible moves to any piece -> auto lose.
         """
         if self.white_left == 0 or self.black_left == 0:
             return False
-       # if self.black_left > 5 and color is BLACK:
-       #      return False
-       #  if self.white_left > 5 and color is WHITE:
-       #      return False
+
         white_can_move = False
         black_can_move = False
         for row in range(ROWS):

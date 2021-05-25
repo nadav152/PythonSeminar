@@ -80,7 +80,7 @@ class View:
         large_font = pygame.font.SysFont('comics', 42)
         winner = large_font.render('The winner is : ' + str(winner), True, BLACK)
         if white_left == black_left:
-            winner = regular_font.render('Draw!! No possible moves both players and same amount of pieces.', True, BLACK)
+            winner = regular_font.render('Draw!! No possible moves for both players and same amount of pieces.', True, BLACK)
             win.blit(winner, (85, 200))
         else:
             win.blit(winner, (250, 200))

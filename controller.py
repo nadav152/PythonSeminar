@@ -87,6 +87,7 @@ class Controller:
         elif quit_game:
             pygame.quit()
         else:
+            pygame.time.delay(5000) # Delay for showing board last state before ask rematch.
             self.show_winner(no_moves)
             self.check_for_rematch()
 
