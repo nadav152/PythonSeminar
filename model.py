@@ -7,7 +7,7 @@ from pygame import mixer
 class Model:
     def __init__(self):
         self.board = []
-        self.black_left = self.white_left = 12
+        self.black_left = self.white_left = 1
         self.black_undo_left = self.white_undo_left = 3
         self.black_kings = self.white_kings = 0
         self.create_board_array()

@@ -9,12 +9,12 @@ class View:
     def draw_game(self, win, board):
         """"
         draw board with pieces and exit button
+        :param board: matrix of pieces
         :param win: pygame screen
-        board: matrix of pieces
         :return:
         """
         win.fill(WHITE)
-        win.blit(EXIT, (810, 12))
+        win.blit(EXIT, (905, 12))
         self.draw_squares(win)
         for row in range(ROWS):
             for col in range(COLS):
@@ -52,7 +52,8 @@ class View:
     def draw_valid_moves(self, win, moves):
         """"
         draw red circles on squares the player can move on
-        :param win: pygame screen, moves: player's valid moves
+        :param moves: player's valid moves
+        :param win: pygame screen
         :return:
         """
         for move in moves:
@@ -64,43 +65,56 @@ class View:
     def draw_winner(self, win, winner, no_moves, white_left, black_left):
         """"
         write on screen the winner color player
+        :param black_left: for draw check
+        :param white_left: for draw check
         :param win: pygame screen
         :param winner: winner player
         :param no_moves: True if Auto lose because no piece could move
         :return:
         """
-        regular_font = pygame.font.SysFont('comics', 30)
         if no_moves and black_left != white_left:
-
             loser = "White"
             if winner == 'WHITE':
                 loser = "Black"
-            auto_lose = regular_font.render(str(loser) + ' had no possible moves!!' , True, BLACK)
-            win.blit(auto_lose, (250, 160))
-        large_font = pygame.font.SysFont('comics', 42)
-        winner = large_font.render('The winner is : ' + str(winner), True, BLACK)
+            regular_font = pygame.font.SysFont('comics', 30)
+            auto_lose = regular_font.render(str(loser) + ' had no moves!!' , True, BLACK)
+            win.blit(auto_lose, (690, 160))
+        large_font = pygame.font.SysFont('comics', 40)
+        winner = large_font.render(str(winner) + " Wins!!!", True, BLACK)
         if white_left == black_left:
-            winner = regular_font.render('Draw!! No possible moves for both players and same amount of pieces.', True, BLACK)
-            win.blit(winner, (85, 200))
+            winner = large_font.render('Draw!!!', True, BLACK)
+            win.blit(winner, (750, 200))
         else:
-            win.blit(winner, (250, 200))
+            win.blit(winner, (700, 200))
 
-    def draw_rematch(self, win):
+    def draw_rematch(self, win, board):
         """"
-        write to screen if the players wants rematch, draw 2 button "YES", "NO"
+        Draw last state of board. Who wins and "Rematch" button
+        :param board: matrix of pieces
         :param win: pygame screen
         :return:
         """
-        win.fill(WHITE)
-        font = pygame.font.SysFont('comics', 40)
-        rematch = font.render('Would you like a rematch?', True, BLACK)
-        win.blit(rematch, (820 / 2 - rematch.get_width() / 2, 250))
-        yes = font.render('Yes', True, WHITE)
-        no = font.render('No', True, WHITE)
-        pygame.draw.rect(win, GREEN, (250, 350, 100, 50))
-        pygame.draw.rect(win, RED, (450, 350, 100, 50))
-        win.blit(yes, (275, 362))
-        win.blit(no, (482, 362))
+        self.draw_game(win, board)
+        x = 740
+        y = 270
+        pos = pygame.mouse.get_pos()
+        color = BLUE
+        if x + 100 > pos[0] > x and y + 50 > pos[1] > y:
+            color = DARK_BLUE
+        pygame.draw.rect(win, color, (x, y, 100, 50))
+
+        text = " Rematch  "
+        font = pygame.font.SysFont("David", 25)
+        outline_font = pygame.font.SysFont("David", 25)
+
+        outline_text = outline_font.render(text, True, BLACK)
+        button_text = font.render(text, True, WHITE)
+        win.blit(outline_text, (x + 3, y + 15))
+        win.blit(button_text, (x + 2, y + 13))
+        pygame.draw.line(win, BLACK, (x, y), (x, y + 50), 2)
+        pygame.draw.line(win, BLACK, (x, y), (x + 100, y), 2)
+        pygame.draw.line(win, BLACK, (x, y + 50), (x + 100, y + 50), 2)
+        pygame.draw.line(win, BLACK, (x + 100, y), (x + 100, y + 50), 2)
 
     def draw_menu(self, win):
         """"
@@ -114,10 +128,10 @@ class View:
         x = 380
         y = 500
         color = BLUE
-        if 380 + 100 > pos[0] > 380 and 500 + 40 > pos[1] > 500:
+        if x + 100 > pos[0] > x and y + 40 > pos[1] > y:
             color = DARK_BLUE
 
-        pygame.draw.rect(win, color, (380, 500, 100, 40))
+        pygame.draw.rect(win, color, (x, y, 100, 40))
         text = "  Start"
         font = pygame.font.SysFont("David", 32)
         outline_font = pygame.font.SysFont("David", 32)
@@ -134,10 +148,11 @@ class View:
     def draw_undo(self, win, player_turn, first_turn, black_undo_left, white_undo_left):
         """"
         Draw Undo button
-        :param win: pygame screen , player_turn: which one can do undo
-        first_turn: on first turn no one can undo
-        black_undo_left: if 0, black can't undo
-        white_undo_left: if 0, white can't undo
+        :param white_undo_left: if 0, white can't undo
+        :param black_undo_left: if 0, black can't undo
+        :param first_turn: on first turn no one can undo
+        :param player_turn: which one can do undo
+        :param win: pygame screen
         :return:
         """
         if first_turn:
@@ -152,21 +167,23 @@ class View:
         player_undo = font.render(player_undo, True, (36, 34, 34))
         color = GREY
         pos = pygame.mouse.get_pos()
-        if 700 + 100 > pos[0] > 700 and 250 + 50 > pos[1] > 250:
+        x = 740
+        y = 250
+        if x + 100 > pos[0] > x and y + 50 > pos[1] > y:
             color = DARK_GREY
-        pygame.draw.rect(win, color, (700, 250, 100, 50))
-        win.blit(player_undo, (710, 270))
-        pygame.draw.line(win, BLACK, (700, 250), (800, 250), 2)
-        pygame.draw.line(win, BLACK, (700, 250), (700, 300), 2)
-        pygame.draw.line(win, BLACK, (700, 300), (800, 300), 2)
-        pygame.draw.line(win, BLACK, (800, 250), (800, 300), 2)
+        pygame.draw.rect(win, color, (x, y, 100, 50))
+        win.blit(player_undo, (x + 10, y + 20))
+        pygame.draw.line(win, BLACK, (x, y), (x + 100, y), 2)
+        pygame.draw.line(win, BLACK, (x, y), (x, y + 50), 2)
+        pygame.draw.line(win, BLACK, (x, y + 50), (x + 100, y + 50), 2)
+        pygame.draw.line(win, BLACK, (x + 100, y), (x + 100, y + 50), 2)
 
     def draw_remain_undoes(self, win, white_player_undo, black_play_undo):
         """"
         write on screen how much remain undoes for each player
         :param win: pygame screen
-        white_player_undo: write num of white's undo
-        black_play_undo: write num of black's undo
+        :param black_play_undo: write num of black's undo
+        :param white_player_undo: write num of white's undo
         :return:
         """
         font = pygame.font.SysFont('comics', 23)
@@ -174,8 +191,8 @@ class View:
         black_undoes = 'Black Undo left : ' + str(black_play_undo)
         white_render = font.render(white_undoes, True, (36, 34, 34))
         black_render = font.render(black_undoes, True, (36, 34, 34))
-        win.blit(white_render, (680, 500))
-        win.blit(black_render, (680, 100))
+        win.blit(white_render, (730, 500))
+        win.blit(black_render, (730, 100))
 
     def draw_timers(self, win, minutes_white, seconds_white, minutes_black, seconds_black):
         """"
@@ -190,7 +207,7 @@ class View:
 
         time_render_white = font.render(time_str_white, True, (36, 34, 34))
         time_render_black = font.render(time_str_black, True, (36, 34, 34))
-        timer_x = 715
+        timer_x = 765
         white_timer_y = 550
         black_timer_y = 50
         win.blit(time_render_white, (timer_x, white_timer_y))

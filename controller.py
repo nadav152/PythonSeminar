@@ -74,7 +74,7 @@ class Controller:
                     quit_game = True
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
-                    if 810 + 30 > pos[0] > 810 and 12 + 30 > pos[1] > 12:
+                    if 905 + 30 > pos[0] > 905 and 12 + 30 > pos[1] > 12:
                         run = False
                         instructions = True
                         break
@@ -87,9 +87,9 @@ class Controller:
         elif quit_game:
             pygame.quit()
         else:
-            pygame.time.delay(5000) # Delay for showing board last state before ask rematch.
-            self.show_winner(no_moves)
-            self.check_for_rematch()
+            #pygame.time.delay(5000) # Delay for showing board last state before ask rematch.
+           self.show_winner(no_moves)
+           self.check_for_rematch()
 
     def start_timers(self, time_black, time_white):
         """"
@@ -105,7 +105,7 @@ class Controller:
         check if undo or player movement
         """
         if event.type == pygame.MOUSEBUTTONDOWN and (
-                700 + 100 > pos[0] > 700 and 250 + 50 > pos[1] > 250):
+                740 + 100 > pos[0] > 740 and 250 + 50 > pos[1] > 250):
             self.model.undo()
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -174,27 +174,30 @@ class Controller:
         Run winner screen with buttons "YES", "NO".
         """
         run = True
+        instructions = False
         while run:
-            pygame.time.delay(100)
-            mouse = pygame.mouse.get_pos()
+            pos = pygame.mouse.get_pos()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
                 # mouse pressed on rematch
-                if event.type == pygame.MOUSEBUTTONDOWN and (
-                        250 + 100 > mouse[0] > 250 and 400 > mouse[1] > 350):
-                    self.rematch = True
-                    run = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if 905 + 30 > pos[0] > 905 and 12 + 30 > pos[1] > 12:
+                        run = False
+                        instructions = True
 
-                # mouse pressed on end game
-                if event.type == pygame.MOUSEBUTTONDOWN and (
-                        450 + 100 > mouse[0] > 450 and 350 + 50 > mouse[1] > 350):
-                    run = False
-            self.view.draw_rematch(WIN)
+                    if 740 + 100 > pos[0] > 740 and 270 + 50 > pos[1] > 270:
+                        self.rematch = True
+                        run = False
+
+            self.view.draw_rematch(WIN, self.model.board)
             self.view.draw_winner(WIN, self.model.winner, no_moves, self.model.white_left, self.model.black_left)
             pygame.display.update()
-
-        self.check_for_rematch()
+        if instructions:
+            self.reset_self_values()
+            self.start_game()
+        else:
+            self.check_for_rematch()
 
         pygame.quit()
 
@@ -224,7 +227,7 @@ class Controller:
 if __name__ == '__main__':
     FPS = 60
     pygame.init()
-    WIN = pygame.display.set_mode((WIDTH + 200, HEIGHT))
+    WIN = pygame.display.set_mode((WIDTH + 300, HEIGHT))
     pygame.display.set_caption('Checkers')
 
     checkers = Controller()
