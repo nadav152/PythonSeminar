@@ -125,7 +125,7 @@ class View:
         pos = pygame.mouse.get_pos()
         win.fill(WHITE)
         win.blit(INSTRUCTIONS, (10, 10))
-        x = 380
+        x = 430
         y = 500
         color = BLUE
         if x + 100 > pos[0] > x and y + 40 > pos[1] > y:

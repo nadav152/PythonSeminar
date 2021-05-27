@@ -7,7 +7,7 @@ from pygame import mixer
 class Model:
     def __init__(self):
         self.board = []
-        self.black_left = self.white_left = 1
+        self.black_left = self.white_left = 12
         self.black_undo_left = self.white_undo_left = 3
         self.black_kings = self.white_kings = 0
         self.create_board_array()
@@ -57,7 +57,8 @@ class Model:
     def select_area(self, row, col):
         """"
         select square and check moves
-        :param row: row location, col: column location
+        :param col: column location
+        :param row: row location
         :return True if can move
         """
         if self.selected_piece and (row, col) in self.valid_moves:
@@ -80,7 +81,8 @@ class Model:
     def check_possible_movement(self, row, col):
         """"
         check if piece can move to the square in (row, col)
-        :param row: new row location, col : new column location
+        :param col: new column location
+        :param row: new row location
         :return: True if can move
         """
         piece = self.get_piece(row, col)  # check if square is empty
@@ -100,9 +102,9 @@ class Model:
     def update_model_location(self, piece, row, col):
         """"
         move piece to new square
+        :param col: new column location
+        :param row: new row location
         :param piece: one piece on board
-        row: new row location
-        col: new column location
         :return:
         """
         # update board array
@@ -157,7 +159,12 @@ class Model:
     def travese_left(self, start, stop, step, color, left, skipped=None):
         """"
         get piece's valid moves to left
-        :param piece: one piece on board
+        :param skipped: pieces list
+        :param left: direction
+        :param color: piece color
+        :param step: piece step
+        :param stop: where piece stop
+        :param start: where piece start
         :return: all piece's valid moves to left
         """
         if skipped is None:
@@ -196,7 +203,12 @@ class Model:
     def travese_right(self, start, stop, step, color, right, skipped=None):
         """"
         get piece's valid moves to right
-        :param piece: one piece on board
+        :param skipped: pieces list
+        :param right: direction
+        :param color: piece color
+        :param step: piece step
+        :param stop: where piece stop
+        :param start: where piece start
         :return: all piece's valid moves to right
         """
         if skipped is None:

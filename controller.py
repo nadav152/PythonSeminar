@@ -28,13 +28,15 @@ class Controller:
         run = True
         start = False
         while run:
-            mouse = pygame.mouse.get_pos()
+            pos = pygame.mouse.get_pos()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
                 # mouse pressed on start game
+                x = 430
+                y = 500
                 if event.type == pygame.MOUSEBUTTONDOWN and (
-                        380 + 100 > mouse[0] > 380 and 500 + 40 > mouse[1] > 500):
+                        x + 100 > pos[0] > x and y + 40 > pos[1] > y):
                     start = True
                     run = False
 
@@ -74,7 +76,9 @@ class Controller:
                     quit_game = True
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
-                    if 905 + 30 > pos[0] > 905 and 12 + 30 > pos[1] > 12:
+                    x = 905
+                    y = 12
+                    if x + 30 > pos[0] > x and y + 30 > pos[1] > y:
                         run = False
                         instructions = True
                         break
@@ -87,9 +91,8 @@ class Controller:
         elif quit_game:
             pygame.quit()
         else:
-            #pygame.time.delay(5000) # Delay for showing board last state before ask rematch.
-           self.show_winner(no_moves)
-           self.check_for_rematch()
+            self.show_winner(no_moves)
+            self.check_for_rematch()
 
     def start_timers(self, time_black, time_white):
         """"
@@ -104,8 +107,10 @@ class Controller:
         """"
         check if undo or player movement
         """
+        x = 740
+        y = 250
         if event.type == pygame.MOUSEBUTTONDOWN and (
-                740 + 100 > pos[0] > 740 and 250 + 50 > pos[1] > 250):
+                x + 100 > pos[0] > x and y + 50 > pos[1] > y):
             self.model.undo()
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -171,7 +176,8 @@ class Controller:
 
     def show_winner(self, no_moves):
         """"
-        Run winner screen with buttons "YES", "NO".
+        show board final state, remove timers and write winner with "Rematch" button
+        :param: no_moves: in case auto-lose write loser "had no moves"
         """
         run = True
         instructions = False
@@ -182,11 +188,14 @@ class Controller:
                     run = False
                 # mouse pressed on rematch
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if 905 + 30 > pos[0] > 905 and 12 + 30 > pos[1] > 12:
+                    x_exit = 905
+                    y_exit = 12
+                    if x_exit + 30 > pos[0] > x_exit and y_exit + 30 > pos[1] > y_exit:
                         run = False
                         instructions = True
-
-                    if 740 + 100 > pos[0] > 740 and 270 + 50 > pos[1] > 270:
+                    x_rematch = 740
+                    y_rematch = 270
+                    if x_rematch + 100 > pos[0] > x_rematch and y_rematch + 50 > pos[1] > y_rematch:
                         self.rematch = True
                         run = False
 
